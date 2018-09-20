@@ -1,25 +1,28 @@
 # Python script to retrieve basic information
 # The application will need:
-## Selenium webdriver/chromedriver since this is being tested in chrome 
+## Selenium webdriver/chromedriver since this is being tested in chrome
 ## Pandas, numpy, etc.
 
-import pandas as pd 
+import pandas as pd
 import os
-import re 
+import re
 import numpy as np
 
 
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-
+from flask import Flask
 ################# DRIVER CODE PORTION #################
-# Executable path -> 
+# Executable path ->
+app = Flask(__name__)
+
+
 driver = webdriver.Chrome(executable_path='/Users/alexaj/anaconda3/bin/chromedriver')
-    #Url to DWORKS 
+    #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
 
@@ -50,7 +53,7 @@ studentDataTag = studentTable.findAll('td')
 studentData = []
 
 for data in studentDataTag:
-    #Below one line extracts data 
+    #Below one line extracts data
     string = data.decode_contents(formatter="html")
     studentData.append(string)
 
