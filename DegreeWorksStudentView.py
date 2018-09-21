@@ -21,12 +21,36 @@ from flask import Flask
 app = Flask(__name__)
 
 
-driver = webdriver.Chrome(executable_path='/Users/alexaj/anaconda3/bin/chromedriver')
-    #Url to DWORKS
+usernameStr =
+passwordStr =
+
+
+
+driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
 
+
+
+username = driver.find_element_by_id('username')
+username.send_keys(usernameStr)
+
+password = driver.find_element_by_id('password')
+password.send_keys(passwordStr)
+
+nextButton = driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
+nextButton.click()
+
+
+
+# driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
+#     #Url to DWORKS
+# url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
+# driver.get(url)
+# delay = 10
 #driver.implicity_wait(10)
+
+print("LOL")
 try:
     element = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'html > frameset > frame:nth-child(4)'))
