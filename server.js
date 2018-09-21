@@ -8,11 +8,10 @@ var express = require('express'),
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-app.use('/public', express.static(__dirname + '/public'));
+app.use('/views', express.static(__dirname + '/views'));
 
 
   var routes = require('./routes/routes');
   routes(app);
 
 app.listen(port);
-
