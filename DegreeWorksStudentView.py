@@ -57,7 +57,7 @@ elif (semMonth >= 9 and semMonth <= 12):
   semSsn = "Fall"
 elif (semMonth = 1):
   semSsn = "Winter"
-  
+
 #currSem will be used to indicate current classes
 currSem = semSsn + " " + str(semYear)
 ################# END GEN VARIABLES ###################
@@ -71,9 +71,8 @@ def studentInfoScrape(soup):
   studentData = []
 
   for stuData in studentDataTag:
-      #Below one line extracts data 
-      string = stuData.decode_contents(formatter="html")
-      studentData.append(string)
+    #Below one line extracts data 
+    studentData.append(stuData.text)
 
   #studentData
   #studentTitle = studentData[::2]
@@ -96,8 +95,7 @@ def coreReqScrape(soup):
 
   reqCourses = []
   for reqString in reqStrings:
-      req = reqString.decode_contents(formatter="html")
-      reqCourses.append(req)
+    reqCourses.append(reqString.text)
 
   coreReqs = [x for x in reqCourses if '3 credits' in x]
 
@@ -117,47 +115,46 @@ def creditProgressScrape(soup):
   #subTitle
   headTitleP = []
   for headT in headTitle:
-      string = headT.getText()
-      headTitleP.append(string)
+    string = headT.getText()
+    headTitleP.append(string)
   #headTitleP
 
   creditTitles = []
   for headTitle in headTitleP:
-      if any(s in headTitle for s in ('Degree', 'Major', 'Minor')):
-          creditTitles.append(headTitle)
+    if any(s in headTitle for s in ('Degree', 'Major', 'Minor')):
+      creditTitles.append(headTitle)
 
   subData = soup.find_all("td", attrs={"class": "BlockHeadSubData"})
   #dataNP = array of subData that is not parsed, but converted from obj to str
   subDataNP = []
   for subD in subData:
-      string = subD.getText()
-      subDataNP.append(string)
-      #objToText
+    subDataNP.append(subD.text)
+  #objToText
 
   #dataP = array subData that is/will be parsed
   subDataP = []
   for subDataN in subDataNP:
-      string = subDataN.split("\xa0 ",1)[1]
-      if string:
-          subDataP.append(string)
+    string = subDataN.split("\xa0 ",1)[1]
+    if string:
+        subDataP.append(string)
   #subDataP
       
   credits = []
 
   for subData in subDataP:
-      if not any(s in subData for s in ('-', '.')):
-          credits.append(subData)
+    if not any(s in subData for s in ('-', '.')):
+        credits.append(subData)
 
   totalCredits = []
   completedCredits = []
   i = 0
   while i < len(credits):
-      if i % 2 == 0:
-          totalCredits.append(credits[i])
-          i += 1
-      else:
-          completedCredits.append(credits[i])
-          i += 1
+    if i % 2 == 0:
+      totalCredits.append(credits[i])
+      i += 1
+    else:
+      completedCredits.append(credits[i])
+      i += 1
 
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
