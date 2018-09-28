@@ -140,7 +140,7 @@ margin: 0 auto;
 } */
 
 .main-inside{
-  padding: 30px;
+  padding-top: 5em;;
   text-align: center;
 }
 
@@ -149,6 +149,7 @@ margin: 0 auto;
   font-weight: bolder;
   font-size: 35px;
   color: black;
+  padding-bottom:20px;
 }
 
 
@@ -165,4 +166,10 @@ button.ui.button.black {
 .load-p{
 margin-top: 30px;
 font-size:30px;
+}
+
+
+.img-wrapper.animated.bounce.infinite{
+  margin: 30px;
+  padding-top: 40px;
 }
