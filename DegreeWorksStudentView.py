@@ -23,6 +23,7 @@ app = Flask(__name__)
 
 usernameStr = "khr77"
 passwordStr = "master97"
+print "RANNNNNN!!!!!!!!!!!!"
 
 
 
@@ -73,6 +74,7 @@ for data in studentDataTag:
     #Below one line extracts data
     string = data.decode_contents(formatter="html")
     studentData.append(string)
+    print string
 
 #studentData
 #studentTitle = studentData[::2]
