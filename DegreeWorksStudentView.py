@@ -21,8 +21,8 @@ from flask import Flask
 app = Flask(__name__)
 
 
-usernameStr =
-passwordStr =
+usernameStr = "khr77"
+passwordStr = "master97"
 
 
 
@@ -50,13 +50,6 @@ nextButton.click()
 # delay = 10
 #driver.implicity_wait(10)
 
-print("LOL")
-try:
-    element = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'html > frameset > frame:nth-child(4)'))
-    )
-finally:
-    driver.quit()
 ################# END DRIVER CODE PORTION #################
 
 ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
