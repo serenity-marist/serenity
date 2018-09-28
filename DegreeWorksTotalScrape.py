@@ -45,6 +45,18 @@ soup = BeautifulSoup(html, "html5lib")
 ################# END BS PORTION TO RETRIEVE HTML FOR BODY #################
 
 ################# GENERAL VARIABLES #################
+headTitles = soup.find_all("td", attrs={"class": "BlockHeadTitle"})
+headTitle = []
+for head in headTitles:
+    headTitle.append(head.text)
+#Students info: 
+#arrays: major(s), minor(s), degree
+#strings: pway (since there can only be one)
+degreeName = [x for x in headTitle if 'Degree' in x]
+majorArray = [x for x in headTitle if 'Major' in x]
+minorArray = [x for x in headTitle if 'Minor' in x]
+pwayName = [x for x in headTitle if 'Pathway' in x][0]
+
 semYear = datetime.date.today().year
 semMonth = datetime.date.today().month
 semSsn = ""
@@ -72,7 +84,7 @@ def studentInfoScrape(soup):
 
   for stuData in studentDataTag:
     #Below one line extracts data 
-    studentData.append(stuData.text)
+    studentData.append(data.text.strip())
 
   #studentData
   #studentTitle = studentData[::2]
@@ -81,8 +93,12 @@ def studentInfoScrape(soup):
   studentKeyVal = dict(zip(studentData[::2], studentData[1::2]))
   studentView = pd.DataFrame.from_dict(studentKeyVal, orient='index')
 
-  studentInfoFile = 'SerenityStudentInfo.csv'
-  studentView.to_csv(studenInfoFile, index=False)
+  #JSON of DataFrame is default, CSV commented out
+  #studentInfoFileCSV = 'SerenityStudentInfo.csv'
+  studentInfoFileJSON = 'SerenityStudentInfo.json'
+  #studentView.to_csv(studenInfoFileCSV, index=False)
+  studentView.to_json(studenInfoFileJSON)
+
 
 ################# END STUDENT VIEW SCRAPE #################
 
@@ -102,8 +118,11 @@ def coreReqScrape(soup):
   coreReqDf = pd.DataFrame(coreReqs)
   coreReqDf.columns = ['Core Requirement']
 
-  coreReqFile = 'SerenityCoreReqs.csv'
-  coreReqDf.to_csv(coreReqFile, index=False)
+  #JSON of DataFrame is default, CSV commented out
+  # coreReqFileCSV = 'SerenityCoreReqs.csv'
+  # coreReqDf.to_csv(coreReqFileCSV, index=False)
+  coreReqFileJSON = 'SerenityCoreReqs.json'
+  coreReqDf.to_json(coreReqFileJSON)
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
@@ -111,18 +130,8 @@ coreReqScrape(soup)
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
-  headTitle = soup.find_all("td", attrs={"class": "BlockHeadTitle"})
-  #subTitle
-  headTitleP = []
-  for headT in headTitle:
-    string = headT.getText()
-    headTitleP.append(string)
-  #headTitleP
-
   creditTitles = []
-  for headTitle in headTitleP:
-    if any(s in headTitle for s in ('Degree', 'Major', 'Minor')):
-      creditTitles.append(headTitle)
+  creditTitles = degreeName + majorArray + minorArray
 
   subData = soup.find_all("td", attrs={"class": "BlockHeadSubData"})
   #dataNP = array of subData that is not parsed, but converted from obj to str
@@ -159,12 +168,77 @@ def creditProgressScrape(soup):
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
   progressDf = pd.DataFrame(creditsProgress,columns=['Title', 'Credits Completed', 'Total Needed'])
-  majMinFile = 'SerenityMajMin.csv'
-  progressDf.to_csv(majMinFile, index=False)
+  
+  #JSON of DataFrame is default, CSV commented out
+  # majMinFileCSV = 'SerenityMajMin.csv'
+  # progressDf.to_csv(majMinFileCSV, index=False)
+  majMinFileJSON = 'SerenityMajMin.json'
+  progressDf.to_json(majMinFileJSON)
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
 ##Calling the function to get credit progress info!!
 creditProgressScrape(soup)
+
+################# CURRENT CLASSES SCRAPE ##################
+def function currClassScrape(soup):
+  currClassHTML = soup.find_all("table", attrs={"class": "xBlocks"})[1]
+  
+  #classNames
+  className = currClassHTML.find_all("td", attrs={"class": "SectionCourseTitle"})
+  classNames = []
+
+  for classes in className:
+      classNames.append(classes.text)
+      
+  #classNumbers
+  classNo = currClassHTML.find_all("td", attrs={"class": "ClassesAppliedClasses"})
+  classNos = []
+
+  for no in classNo:
+      no = no.text.replace(u'\xa0', u' ')
+      classNos.append(no)
+
+  #creditsEach
+  noCredits = currClassHTML.find_all("td", attrs={"class": "SectionCourseCredits"})
+  curCredits = []
+
+  for noCreds in noCredits:
+      curCredits.append(noCreds.text)
+  
+  currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
+  currClassDataStack = currClassDataStack.tolist()
+
+  currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Course No', 'Course Title', 'Credit Value'])
+  
+  #JSON of DataFrame is default, CSV commented out
+  # currClassFileCSV = 'SerenityCurrClass.csv'
+  # currClassInfoDf.to_csv(currClassFileCSV, index=False)
+  currClassFileJSON = 'SerenityCurrClass.json'
+  currClassInfoDf.to_json(currClassFileJSON)
+################# END CURR CLASSES SCRAPE ##################
+
+##Calling the function to get curr class info!!
+currClassScrape(soup)
+
+###################### PATHWAY SCRAPE ######################
+def pathwayScrape(soup):
+  pathwayClasses = driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
+  pathwaySoup = BeautifulSoup(pathwayClasses.get_attribute('innerHTML'), "html5lib")
+
+  pathwayTable = pathwaySoup.find_all('table')[0]
+  pathwayDf = pd.read_html(str(pathwayTable))[0]
+  pathwayDf.columns = ['Course No', 'Course Title', 'Grade', 'Credits', 'Semester']
+
+  #JSON of DataFrame is default, CSV commented out
+  pathwayFileJSON = 'SerenityPathway.JSON'
+  pathwayDf.to_json(pathwayFileJSON)
+  # pathwayFileCSV = 'SerenityPathway.csv'
+  # pathwayDf.to_json(pathwayFileCSV, index=False)
+
+###################### END PWAY SCRAPE ######################
+
+##Calling the function to get pathway  info!!
+pathwayScrape(soup)
 
 ################ DF TO FILES BLOCK ######################
 ##Unnecessary if I am making functions for each scrape 
