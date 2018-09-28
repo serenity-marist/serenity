@@ -53,6 +53,7 @@ for head in headTitles:
 #arrays: major(s), minor(s), degree
 #strings: pway (since there can only be one)
 degreeName = [x for x in headTitle if 'Degree' in x]
+concentrations = [x for x in headTitle if 'Concentration' in x]
 majorArray = [x for x in headTitle if 'Major' in x]
 minorArray = [x for x in headTitle if 'Minor' in x]
 pwayName = [x for x in headTitle if 'Pathway' in x][0]
@@ -122,7 +123,7 @@ def coreReqScrape(soup):
   # coreReqFileCSV = 'SerenityCoreReqs.csv'
   # coreReqDf.to_csv(coreReqFileCSV, index=False)
   coreReqFileJSON = 'SerenityCoreReqs.json'
-  coreReqDf.to_json(coreReqFileJSON)
+  coreReqDf.to_json(coreReqFileJSON, orient='records')
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
@@ -153,6 +154,11 @@ def creditProgressScrape(soup):
   for subData in subDataP:
     if not any(s in subData for s in ('-', '.')):
         credits.append(subData)
+  
+  creditTitles = []
+  creditTitles = degreeName + majorArray + concentrations + minorArray 
+  if (len(creditTitles) * 2 != len(credits)):
+    creditTitles = degreeName + concentrations + minorArray 
 
   totalCredits = []
   completedCredits = []
@@ -173,7 +179,7 @@ def creditProgressScrape(soup):
   # majMinFileCSV = 'SerenityMajMin.csv'
   # progressDf.to_csv(majMinFileCSV, index=False)
   majMinFileJSON = 'SerenityMajMin.json'
-  progressDf.to_json(majMinFileJSON)
+  progressDf.to_json(majMinFileJSON, orient='records')
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
 ##Calling the function to get credit progress info!!
@@ -181,7 +187,12 @@ creditProgressScrape(soup)
 
 ################# CURRENT CLASSES SCRAPE ##################
 def function currClassScrape(soup):
-  currClassHTML = soup.find_all("table", attrs={"class": "xBlocks"})[1]
+  currClassHTML = soup.find_all("table", attrs={"class": "xBlocks"})
+
+  if(len(currClassHTML) > 2):
+      currClassHTML = currClassHTML[2]
+  else:
+      currClassHTML = currClassHTML[1]
   
   #classNames
   className = currClassHTML.find_all("td", attrs={"class": "SectionCourseTitle"})
@@ -214,7 +225,7 @@ def function currClassScrape(soup):
   # currClassFileCSV = 'SerenityCurrClass.csv'
   # currClassInfoDf.to_csv(currClassFileCSV, index=False)
   currClassFileJSON = 'SerenityCurrClass.json'
-  currClassInfoDf.to_json(currClassFileJSON)
+  currClassInfoDf.to_json(currClassFileJSON, orient='records')
 ################# END CURR CLASSES SCRAPE ##################
 
 ##Calling the function to get curr class info!!
@@ -222,8 +233,8 @@ currClassScrape(soup)
 
 ###################### PATHWAY SCRAPE ######################
 def pathwayScrape(soup):
-  pathwayClasses = driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
-  pathwaySoup = BeautifulSoup(pathwayClasses.get_attribute('innerHTML'), "html5lib")
+  pathwayClassesDri = driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
+  pathwaySoup = BeautifulSoup(pathwayClassesDri.get_attribute('innerHTML'), "html5lib")
 
   pathwayTable = pathwaySoup.find_all('table')[0]
   pathwayDf = pd.read_html(str(pathwayTable))[0]
@@ -231,7 +242,7 @@ def pathwayScrape(soup):
 
   #JSON of DataFrame is default, CSV commented out
   pathwayFileJSON = 'SerenityPathway.JSON'
-  pathwayDf.to_json(pathwayFileJSON)
+  pathwayDf.to_json(pathwayFileJSON, orient='records')
   # pathwayFileCSV = 'SerenityPathway.csv'
   # pathwayDf.to_json(pathwayFileCSV, index=False)
 
