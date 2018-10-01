@@ -79,27 +79,25 @@ currSem = semSsn + " " + str(semYear)
 
 def studentInfoScrape(soup):
   studentTable = soup.find("table", attrs={"class": "Inner"})
-  studentDataTag = studentTable.findAll('td')
 
-  studentData = []
+  studentInfoDf = pd.read_html(str(studentTable))[0]
 
-  for stuData in studentDataTag:
-    #Below one line extracts data 
-    studentData.append(data.text.strip())
+  primValue = list(studentInfoDf[0])
+  primInfo = list(studentInfoDf[1])
+  secondColumn = list(studentInfoDf[2])
+  thirdColumn = list(studentInfoDf[3])
 
-  #studentData
-  #studentTitle = studentData[::2]
-  #studentD = studentData[1::2]
-  #studentTitle
-  studentKeyVal = dict(zip(studentData[::2], studentData[1::2]))
-  studentView = pd.DataFrame.from_dict(studentKeyVal, orient='index')
+  finalValue = primValue + secondColumn
+  finalInfo = primInfo + thirdColumn
 
-  #JSON of DataFrame is default, CSV commented out
-  #studentInfoFileCSV = 'SerenityStudentInfo.csv'
+  studentInfo = np.vstack((finalValue, finalInfo)).T
+  studentInfo = studentInfo.tolist()
+
+  studentInfoFinalDf = pd.DataFrame(studentInfo,columns=['Values', 'Infor'])
+  #studentInfoFinalDf
+
   studentInfoFileJSON = 'SerenityStudentInfo.json'
-  #studentView.to_csv(studenInfoFileCSV, index=False)
-  studentView.to_json(studenInfoFileJSON)
-
+  studentInfoFinalDf.to_json(studentInfoFileJSON, orient='records')
 
 ################# END STUDENT VIEW SCRAPE #################
 
