@@ -8,7 +8,7 @@ import os
 import re 
 import numpy as np
 import datetime
-
+import sys 
 
 from bs4 import BeautifulSoup 
 from selenium import webdriver
@@ -62,7 +62,7 @@ semYear = datetime.date.today().year
 semMonth = datetime.date.today().month
 semSsn = ""
 
-if (semMonth >= 1 and semMonth <= 5):
+if (semMonth > 1 and semMonth <= 5):
   semSsn = "Spring"
 elif (semMonth >= 6 and semMonth <= 8):
   semSsn = "Summer"
@@ -184,7 +184,7 @@ def creditProgressScrape(soup):
 creditProgressScrape(soup)
 
 ################# CURRENT CLASSES SCRAPE ##################
-def function currClassScrape(soup):
+def currClassScrape(soup):
   currClassHTML = soup.find_all("table", attrs={"class": "xBlocks"})
 
   if(len(currClassHTML) > 2):
@@ -239,7 +239,7 @@ def pathwayScrape(soup):
   pathwayDf.columns = ['Course No', 'Course Title', 'Grade', 'Credits', 'Semester']
 
   #JSON of DataFrame is default, CSV commented out
-  pathwayFileJSON = 'SerenityPathway.JSON'
+  pathwayFileJSON = 'SerenityPathway.json'
   pathwayDf.to_json(pathwayFileJSON, orient='records')
   # pathwayFileCSV = 'SerenityPathway.csv'
   # pathwayDf.to_json(pathwayFileCSV, index=False)
@@ -249,6 +249,9 @@ def pathwayScrape(soup):
 ##Calling the function to get pathway  info!!
 pathwayScrape(soup)
 
-################ DF TO FILES BLOCK ######################
-##Unnecessary if I am making functions for each scrape 
-################ END DF TO FILES BLOCK ######################
+################ CLOSE SESSION ######################
+
+#closes the driver session safely 
+#driver.dispose()
+
+################ END SCRAPE PYTHON ######################
