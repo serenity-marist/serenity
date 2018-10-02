@@ -24,13 +24,19 @@ driver = webdriver.Chrome(executable_path='/Users/alexaj/anaconda3/bin/chromedri
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
 
-#driver.implicity_wait(10)
-try:
-  element = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, 'html > frameset > frame:nth-child(4)'))
-  )
-finally:
-  driver.quit()
+
+##username and password##
+usernameStr = "Alexa.Javellana1@marist.edu"
+passwordStr = "yuihorie"
+
+username = driver.find_element_by_id('username')
+username.send_keys(usernameStr)
+
+password = driver.find_element_by_id('password')
+password.send_keys(passwordStr)
+
+nextButton = driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
+nextButton.click()
 ################# END DRIVER CODE PORTION #################
 
 ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
@@ -68,7 +74,7 @@ elif (semMonth >= 6 and semMonth <= 8):
   semSsn = "Summer"
 elif (semMonth >= 9 and semMonth <= 12):
   semSsn = "Fall"
-elif (semMonth = 1):
+elif (semMonth == 1):
   semSsn = "Winter"
 
 #currSem will be used to indicate current classes
