@@ -26,8 +26,8 @@ driver.get(url)
 
 
 ##username and password##
-usernameStr = "Alexa.Javellana1@marist.edu"
-passwordStr = "yuihorie"
+usernameStr = "xx@marist.edu"
+passwordStr = "xx"
 
 username = driver.find_element_by_id('username')
 username.send_keys(usernameStr)
