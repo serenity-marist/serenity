@@ -21,69 +21,68 @@ from flask import Flask
 app = Flask(__name__)
 
 
-usernameStr = "khr77"
-passwordStr = "master97"
-print "RANNNNNN!!!!!!!!!!!!"
 
 
 
-driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
-url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
-driver.get(url)
+def runScrape(usernameStr, passwordStr):
+    print "LOVE"
+    driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
+    url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
+    driver.get(url)
 
 
 
-username = driver.find_element_by_id('username')
-username.send_keys(usernameStr)
+    username = driver.find_element_by_id('username')
+    username.send_keys(usernameStr)
 
-password = driver.find_element_by_id('password')
-password.send_keys(passwordStr)
+    password = driver.find_element_by_id('password')
+    password.send_keys(passwordStr)
 
-nextButton = driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
-nextButton.click()
+    nextButton = driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
+    nextButton.click()
 
 
 
-# driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
-#     #Url to DWORKS
-# url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
-# driver.get(url)
-# delay = 10
-#driver.implicity_wait(10)
+    # driver = webdriver.Chrome(executable_path='/Users/arielcamilo/downloads/chromedriver')
+    #     #Url to DWORKS
+    # url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
+    # driver.get(url)
+    # delay = 10
+    #driver.implicity_wait(10)
 
-################# END DRIVER CODE PORTION #################
+    ################# END DRIVER CODE PORTION #################
 
-################# BS PORTION TO RETRIEVE HTML FOR BODY #################
-contFrame = driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
-driver.switch_to.frame(contFrame)
-#frBC = driver.find_element_by_xpath('/html/frameset')
-bodyFrame = driver.find_element_by_name('frBody')
-driver.switch_to.frame(bodyFrame)
+    ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
+    contFrame = driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
+    driver.switch_to.frame(contFrame)
+    #frBC = driver.find_element_by_xpath('/html/frameset')
+    bodyFrame = driver.find_element_by_name('frBody')
+    driver.switch_to.frame(bodyFrame)
 
-html = driver.page_source
-soup = BeautifulSoup(html, "html5lib")
-################# END BS PORTION TO RETRIEVE HTML FOR BODY #################
+    html = driver.page_source
+    soup = BeautifulSoup(html, "html5lib")
+    ################# END BS PORTION TO RETRIEVE HTML FOR BODY #################
 
-################# STUDENT VIEW SCRAPE #################
-studentTable = soup.find("table", attrs={"class": "Inner"})
-studentDataTag = studentTable.findAll('td')
+    ################# STUDENT VIEW SCRAPE #################
+    studentTable = soup.find("table", attrs={"class": "Inner"})
+    studentDataTag = studentTable.findAll('td')
 
-studentData = []
+    studentData = []
 
-for data in studentDataTag:
-    #Below one line extracts data
-    string = data.decode_contents(formatter="html")
-    studentData.append(string)
-    print string
+    for data in studentDataTag:
+        #Below one line extracts data
+        string = data.decode_contents(formatter="html")
+        studentData.append(string)
+        print string
 
-#studentData
-#studentTitle = studentData[::2]
-#studentD = studentData[1::2]
-#studentTitle
-keyVal = dict(zip(studentData[::2], studentData[1::2]))
-studentView = pd.DataFrame.from_dict(keyVal, orient='index')
-#studentView
+    #studentData
+    #studentTitle = studentData[::2]
+    #studentD = studentData[1::2]
+    #studentTitle
+    keyVal = dict(zip(studentData[::2], studentData[1::2]))
+    studentView = pd.DataFrame.from_dict(keyVal, orient='index')
+    #studentView
 
-filename = 'SerenityStudentInfo.csv'
-studentView.to_csv(filename, index=False)
-################# BS PORTION TO RETRIEVE HTML FOR BODY #################
+    filename = 'SerenityStudentInfo.csv'
+    studentView.to_csv(filename, index=False)
+    ################# BS PORTION TO RETRIEVE HTML FOR BODY #################

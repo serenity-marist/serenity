@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -6,9 +6,12 @@ app = Flask(__name__)
 def home():
  return render_template('landing.html')
 
-@app.route('/webScraperTool')
+@app.route('/webScraperTool', methods=["POST"])
 def webScraperTool():
- import DegreeWorksStudentView
+ email = request.form["email"]
+ password = request.form["password"]
+ import DegreeWorksStudentView as scraper
+ scraper.runScrape(email, password)
  return render_template('webScraperTool.html')
 
 @app.route('/login')
@@ -17,7 +20,8 @@ def login():
 
 @app.route('/test', methods =['GET','POST'])
 def test():
-    return "data"
+
+    return "test"
     # return _test(request.form["test"])
 
 
