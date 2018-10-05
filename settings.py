@@ -4,3 +4,5 @@ global password
 password = ""
 
 global jsonObjects 
+global jsonObject 
+jsonObject = ""

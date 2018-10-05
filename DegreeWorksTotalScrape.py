@@ -21,7 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
-driver = webdriver.Chrome(executable_path='/Users/arielcamilo/Downloads/chromedriver')
+driver = webdriver.Chrome(executable_path='/Users/AlexaJ/anaconda3/bin/chromedriver')
     #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
@@ -96,26 +96,25 @@ def studentInfoScrape(soup):
   secondColumn = list(studentInfoDf[2])
   thirdColumn = list(studentInfoDf[3])
 
-  finalValue = primValue + secondColumn
-  finalInfo = primInfo + thirdColumn
+  finalValue = primValue + secondColumn # resulting array
+  finalInfo = primInfo + thirdColumn    # resulting array
+  #Vstacked dataframe if converted to a json file 
+    # studentInfo = np.vstack((finalValue, finalInfo)).T
+    # studentInfo = studentInfo.tolist()
 
-  studentInfo = np.vstack((finalValue, finalInfo)).T
-  studentInfo = studentInfo.tolist()
+    # studentInfoFinalDf = pd.DataFrame(studentInfo,columns=['Values', 'Infor'])
+    #studentInfoFinalDf
 
-  studentInfoFinalDf = pd.DataFrame(studentInfo,columns=['Values', 'Infor'])
-  #studentInfoFinalDf
-
-  # studentInfoFileJSON = 'SerenityStudentInfo.json'
-
-  # studentJSON = studentInfoFinalDf.to_json(orient='records')
-  # return studentJSON
-
-
+    # studentInfoFileJSON = 'SerenityStudentInfo.json'
+  studentDict = dict(zip(finalValue, finalInfo))
+  studentJSON = json.dumps(studentDict)
+    # studentJSON = studentInfoFinalDf.to_json(orient='records')
+  return studentJSON
 
 ################# END STUDENT VIEW SCRAPE #################
 
 ##Calling the function to get student info!!
-settings.jsonObjects.append(studentInfoScrape(soup))
+settings.jsonObject = studentInfoScrape(soup)
 
 ################# CORE REQ SCRAPE #########################
 def coreReqScrape(soup):
@@ -125,8 +124,8 @@ def coreReqScrape(soup):
   for reqString in reqStrings:
     reqCourses.append(reqString.text)
 
-  coreReqs = [x for x in reqCourses if '3 credits' in x]
-
+  coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
+  
   coreReqDf = pd.DataFrame(coreReqs)
   coreReqDf.columns = ['Core Requirement']
 
@@ -139,7 +138,7 @@ def coreReqScrape(soup):
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
-settings.jsonObjects.append(coreReqScrape(soup))
+# settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
@@ -172,7 +171,7 @@ def creditProgressScrape(soup):
     creditTitles = degreeName + concentrations + minorArray
 
   totalCredits = []
-  completedCredits = []
+  completedCredits = [] 
   i = 0
   while i < len(credits):
     if i % 2 == 0:
@@ -182,6 +181,7 @@ def creditProgressScrape(soup):
       completedCredits.append(credits[i])
       i += 1
 
+  #Resulting array is totalCredits and completedCredits, block should be here
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
   progressDf = pd.DataFrame(creditsProgress,columns=['Title', 'Credits Completed', 'Total Needed'])
@@ -195,7 +195,7 @@ def creditProgressScrape(soup):
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
 ##Calling the function to get credit progress info!!
-settings.jsonObjects.append(creditProgressScrape(soup))
+# settings.jsonObjects.append(creditProgressScrape(soup))
 
 ################# CURRENT CLASSES SCRAPE ##################
 def currClassScrape(soup):
@@ -226,7 +226,7 @@ def currClassScrape(soup):
   for noCreds in noCredits:
       curCredits.append(noCreds.text)
   currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
-  currClassDataStack = currClassDataStack.tolist()
+  currClassDataStack = currClassDataStack.tolist() #Resulting array
 
   currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Course No', 'Course Title', 'Credit Value'])
 
@@ -239,13 +239,14 @@ def currClassScrape(soup):
 ################# END CURR CLASSES SCRAPE ##################
 
 ##Calling the function to get curr class info!!
-settings.jsonObjects.append(currClassScrape(soup))
+# settings.jsonObjects.append(currClassScrape(soup))
 
 ###################### PATHWAY SCRAPE ######################
 def pathwayScrape(soup):
   pathwayClassesDri = driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
   pathwaySoup = BeautifulSoup(pathwayClassesDri.get_attribute('innerHTML'), "html5lib")
 
+  #In this case the exception might be different. Check if functionality for checking empty table
   pathwayTable = pathwaySoup.find_all('table')[0]
   pathwayDf = pd.read_html(str(pathwayTable))[0]
   pathwayDf.columns = ['Course No', 'Course Title', 'Grade', 'Credits', 'Semester']
@@ -260,8 +261,8 @@ def pathwayScrape(soup):
 
 ###################### END PWAY SCRAPE ######################
 
-##Calling the function to get pathway  info!!
-settings.jsonObjects.append(pathwayScrape(soup))
+# Calling the function to get pathway  info!!
+# settings.jsonObjects.append(pathwayScrape(soup))
 
 ################ CLOSE SESSION ######################
 

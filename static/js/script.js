@@ -67,6 +67,7 @@ $(function() {
             dataType: "text",
             type: 'POST',
             success: function(body){
+                console.log(body);
                 var parse = JSON.parse(body);
                 console.log(parse);
             }
