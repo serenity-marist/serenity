@@ -1,16 +1,18 @@
 # Python script to retrieve basic information
 # The application will need:
-## Selenium webdriver/chromedriver since this is being tested in chrome 
+## Selenium webdriver/chromedriver since this is being tested in chrome
 ## Pandas, numpy, etc.
 
-import pandas as pd 
+import pandas as pd
 import os
-import re 
+import re
 import numpy as np
 import datetime
-import sys 
+import sys
+import settings
+import json
 
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,16 +20,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
-# Executable path -> 
-driver = webdriver.Chrome(executable_path='/Users/alexaj/anaconda3/bin/chromedriver')
-    #Url to DWORKS 
+# Executable path ->
+driver = webdriver.Chrome(executable_path='/Users/arielcamilo/Downloads/chromedriver')
+    #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
 
 
 ##username and password##
-usernameStr = "xx@marist.edu"
-passwordStr = "xx"
+usernameStr = settings.email
+passwordStr = settings.password
 
 username = driver.find_element_by_id('username')
 username.send_keys(usernameStr)
@@ -55,7 +57,7 @@ headTitles = soup.find_all("td", attrs={"class": "BlockHeadTitle"})
 headTitle = []
 for head in headTitles:
     headTitle.append(head.text)
-#Students info: 
+#Students info:
 #arrays: major(s), minor(s), degree
 #strings: pway (since there can only be one)
 degreeName = [x for x in headTitle if 'Degree' in x]
@@ -77,6 +79,7 @@ elif (semMonth >= 9 and semMonth <= 12):
 elif (semMonth == 1):
   semSsn = "Winter"
 
+settings.jsonObjects = []
 #currSem will be used to indicate current classes
 currSem = semSsn + " " + str(semYear)
 ################# END GEN VARIABLES ###################
@@ -102,13 +105,17 @@ def studentInfoScrape(soup):
   studentInfoFinalDf = pd.DataFrame(studentInfo,columns=['Values', 'Infor'])
   #studentInfoFinalDf
 
-  studentInfoFileJSON = 'SerenityStudentInfo.json'
-  studentJSON = studentInfoFinalDf.to_json(orient='records')
+  # studentInfoFileJSON = 'SerenityStudentInfo.json'
+
+  # studentJSON = studentInfoFinalDf.to_json(orient='records')
+  # return studentJSON
+
+
 
 ################# END STUDENT VIEW SCRAPE #################
 
 ##Calling the function to get student info!!
-studentInfoScrape(soup)
+settings.jsonObjects.append(studentInfoScrape(soup))
 
 ################# CORE REQ SCRAPE #########################
 def coreReqScrape(soup):
@@ -126,12 +133,13 @@ def coreReqScrape(soup):
   #JSON of DataFrame is default, CSV commented out
   # coreReqFileCSV = 'SerenityCoreReqs.csv'
   # coreReqDf.to_csv(coreReqFileCSV, index=False)
-  coreReqFileJSON = 'SerenityCoreReqs.json'
-  coreReqDf.to_json(coreReqFileJSON, orient='records')
+  # coreReqFileJSON = 'SerenityCoreReqs.json'
+  coreReqJSON = coreReqDf.to_json(orient='records')
+  return coreReqJSON
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
-coreReqScrape(soup)
+settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
@@ -152,17 +160,16 @@ def creditProgressScrape(soup):
     if string:
         subDataP.append(string)
   #subDataP
-      
   credits = []
 
   for subData in subDataP:
     if not any(s in subData for s in ('-', '.')):
         credits.append(subData)
-  
+
   creditTitles = []
-  creditTitles = degreeName + majorArray + concentrations + minorArray 
+  creditTitles = degreeName + majorArray + concentrations + minorArray
   if (len(creditTitles) * 2 != len(credits)):
-    creditTitles = degreeName + concentrations + minorArray 
+    creditTitles = degreeName + concentrations + minorArray
 
   totalCredits = []
   completedCredits = []
@@ -178,16 +185,17 @@ def creditProgressScrape(soup):
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
   progressDf = pd.DataFrame(creditsProgress,columns=['Title', 'Credits Completed', 'Total Needed'])
-  
+
   #JSON of DataFrame is default, CSV commented out
   # majMinFileCSV = 'SerenityMajMin.csv'
   # progressDf.to_csv(majMinFileCSV, index=False)
-  majMinFileJSON = 'SerenityMajMin.json'
-  progressDf.to_json(majMinFileJSON, orient='records')
+  # majMinFileJSON = 'SerenityMajMin.json'
+  progressJSON = progressDf.to_json(orient='records')
+  return progressJSON
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
 ##Calling the function to get credit progress info!!
-creditProgressScrape(soup)
+settings.jsonObjects.append(creditProgressScrape(soup))
 
 ################# CURRENT CLASSES SCRAPE ##################
 def currClassScrape(soup):
@@ -197,14 +205,12 @@ def currClassScrape(soup):
       currClassHTML = currClassHTML[2]
   else:
       currClassHTML = currClassHTML[1]
-  
   #classNames
   className = currClassHTML.find_all("td", attrs={"class": "SectionCourseTitle"})
   classNames = []
 
   for classes in className:
       classNames.append(classes.text)
-      
   #classNumbers
   classNo = currClassHTML.find_all("td", attrs={"class": "ClassesAppliedClasses"})
   classNos = []
@@ -219,21 +225,21 @@ def currClassScrape(soup):
 
   for noCreds in noCredits:
       curCredits.append(noCreds.text)
-  
   currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
   currClassDataStack = currClassDataStack.tolist()
 
   currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Course No', 'Course Title', 'Credit Value'])
-  
+
   #JSON of DataFrame is default, CSV commented out
   # currClassFileCSV = 'SerenityCurrClass.csv'
   # currClassInfoDf.to_csv(currClassFileCSV, index=False)
-  currClassFileJSON = 'SerenityCurrClass.json'
-  currClassInfoDf.to_json(currClassFileJSON, orient='records')
+  # currClassFileJSON = 'SerenityCurrClass.json'
+  currClassJSON = currClassInfoDf.to_json(orient='records')
+  return currClassJSON
 ################# END CURR CLASSES SCRAPE ##################
 
 ##Calling the function to get curr class info!!
-currClassScrape(soup)
+settings.jsonObjects.append(currClassScrape(soup))
 
 ###################### PATHWAY SCRAPE ######################
 def pathwayScrape(soup):
@@ -246,18 +252,20 @@ def pathwayScrape(soup):
 
   #JSON of DataFrame is default, CSV commented out
   pathwayFileJSON = 'SerenityPathway.json'
-  pathwayDf.to_json(pathwayFileJSON, orient='records')
+  pathwayJSON = pathwayDf.to_json(orient='records')
+  return pathwayJSON
+
   # pathwayFileCSV = 'SerenityPathway.csv'
   # pathwayDf.to_json(pathwayFileCSV, index=False)
 
 ###################### END PWAY SCRAPE ######################
 
 ##Calling the function to get pathway  info!!
-pathwayScrape(soup)
+settings.jsonObjects.append(pathwayScrape(soup))
 
 ################ CLOSE SESSION ######################
 
-#closes the driver session safely 
+#closes the driver session safely
 #driver.dispose()
 
 ################ END SCRAPE PYTHON ######################
