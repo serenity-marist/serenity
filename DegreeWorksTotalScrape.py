@@ -103,7 +103,7 @@ def studentInfoScrape(soup):
   #studentInfoFinalDf
 
   studentInfoFileJSON = 'SerenityStudentInfo.json'
-  studentInfoFinalDf.to_json(studentInfoFileJSON, orient='records')
+  studentJSON = studentInfoFinalDf.to_json(orient='records')
 
 ################# END STUDENT VIEW SCRAPE #################
 
