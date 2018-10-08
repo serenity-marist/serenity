@@ -1,75 +1,24 @@
-//
-//
-// function callServer(){
-//
-//   var data = {
-//     "email": "test123@marist.edu",
-//     "password":"master97"
-//     }
-//
-//   $.ajax({
-//     url: "/webScraperTool",
-//     success: function(body){
-//       alert(true);
-//
-//     },
-//     error: function(body){
-//       alert(false);
-//     }
-//
-//   });
-//
-//
-//
-//   $ajax({
-//     type: "POST",
-//     url: "/webScraperTool.html",
-//     data: formData,
-//     success: function(){
-//                 var form = $('creds');
-//
-//
-//              },
-//     dataType: "json",
-//     contentType: "application/json"
-//   });
-// }
-//
-//
-//
-// function showCredentials(){
-//   var form = $('#creds');
-//   $(form).submit(function(event) {
-//     // Stop the browser from submitting the form.
-//     event.preventDefault();
-//     var formData = $(form).serialize();
-//
-//
-//     alert(formData);
-//     // Submit the form using AJAX.
-//     $.ajax({
-//       type: 'POST',
-//       url: $(form).attr('action'),
-//       data: formData
-//     });
-//
-//   )};
-// }
-
-
 
 
 $(function() {
     $('#submitBtn').click(function() {
+      var submissionData = $('#creds').serialize()
         $.ajax({
             url: '/webScraperTool',
-            data: $('#creds').serialize(),
-            dataType: "text",
+            data: submissionData,
             type: 'POST',
             success: function(body){
-                console.log(body);
-                var parse = JSON.parse(body);
-                console.log(parse);
+              var test = `{"Student": "Coltrane, Gary", "ID": "20066526", "Classification": "Senior", "Advisors": "Coleman, Ronald G Rice, Mary C", "Overall GPA": "3.359", "Student Type": "Traditional Continuing", "Term Location": "HEOP", "Level": "Undergraduate", "Degree": "B.S.", "College": "Computer Science & Mathematics", "Major": "Computer Science", "Minor": "CompSci: Software Development"}`
+              var parse = JSON.parse(body);
+              console.log(parse);
+              var {College, Major, Level, Student,ID,Classification} = parse
+                $(".main-content").empty();
+                $(".main-content").append("<h1> Success </h1>")
+                $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
+                $(".main-content").append(`${College} ${Major}: ${Level}`)
+
+
+
             }
         });
     });

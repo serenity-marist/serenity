@@ -21,7 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
-driver = webdriver.Chrome(executable_path='/Users/AlexaJ/anaconda3/bin/chromedriver')
+driver = webdriver.Chrome(executable_path='/Users/garycoltrane/desktop/chromedriver')
     #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
@@ -98,7 +98,9 @@ def studentInfoScrape(soup):
 
   finalValue = primValue + secondColumn # resulting array
   finalInfo = primInfo + thirdColumn    # resulting array
-  #Vstacked dataframe if converted to a json file 
+  finalInfo = [x for x in finalInfo if str(x) != 'nan']
+  finalValue = [x for x in finalValue if str(x) != 'nan']
+  #Vstacked dataframe if converted to a json file
     # studentInfo = np.vstack((finalValue, finalInfo)).T
     # studentInfo = studentInfo.tolist()
 
@@ -114,7 +116,7 @@ def studentInfoScrape(soup):
 ################# END STUDENT VIEW SCRAPE #################
 
 ##Calling the function to get student info!!
-settings.jsonObject = studentInfoScrape(soup)
+settings.jsonObjects.append(studentInfoScrape(soup))
 
 ################# CORE REQ SCRAPE #########################
 def coreReqScrape(soup):
@@ -125,7 +127,7 @@ def coreReqScrape(soup):
     reqCourses.append(reqString.text)
 
   coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
-  
+
   coreReqDf = pd.DataFrame(coreReqs)
   coreReqDf.columns = ['Core Requirement']
 
@@ -171,7 +173,7 @@ def creditProgressScrape(soup):
     creditTitles = degreeName + concentrations + minorArray
 
   totalCredits = []
-  completedCredits = [] 
+  completedCredits = []
   i = 0
   while i < len(credits):
     if i % 2 == 0:

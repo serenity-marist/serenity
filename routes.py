@@ -34,8 +34,8 @@ def webScraperTool():
  settings.email = request.form['email'];
  settings.password = request.form['password'];
  import DegreeWorksTotalScrape
- print(settings.jsonObject)
- return jsonify(settings.jsonObject)
+ #print(settings.jsonObjects)
+ return jsonify(settings.jsonObjects)
 
 
 
