@@ -4,32 +4,21 @@ html, body{
   min-height: 100% !important;
   background-color: #fbc919;
   font-family: 'Ubuntu', sans-serif !important;
-
-
-
 }
-
-
-
 
 .main-content-wrapper{
   width:100%;
   height:100%;
   background-color: #fbc919;
   font-family: 'Ubuntu', sans-serif;
-
 }
-
 
 .main-content{
   height:100%;
-
-
 }
 
 .main-content h1, h2{
   font-family: 'Ubuntu', sans-serif;
-
 }
 
 .ui.menu.main-head{
@@ -39,35 +28,39 @@ html, body{
 }
 
 .ui.menu.main-head .main{
-  font-size: 40px;
+  font-size: 25px;
   margin: 10px;
   color:  #ffd800;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Ubuntu';
   font-weight: bolder;
 
 }
 
 .main-content .content-login{
   margin: 30px auto;
+  padding-top: 2.5em;
 }
+
 .content-login h1{
-  font-size:70px;
+  font-size: 50px;
   color: white;
-  padding: 20px;
+  padding-bottom: 8px;
 }
+
 .content-login h2{
-  font-size:40px;
+  font-size: 35px;
   color: white;
   word-wrap: break-word;
   width:50%;
   margin: 0 auto;
-  padding-top:20px;
+  padding-top:10px;
+  font-weight: bolder;
 }
 
 .header-start{
-  width:40%;
-margin: 0 auto;
-  border-bottom: 2px solid white;
+  width: 50%;
+  margin: 0 auto;
+  border-bottom: 2px dotted white;
 
 }
 .login-wrapper{
@@ -81,11 +74,7 @@ margin: 0 auto;
   padding: 15px;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
-
-
 }
-
-
 
 .floating-input{
   padding: 10px;
@@ -98,8 +87,8 @@ margin: 0 auto;
   position: absolute;
   font-family: 'Ubuntu', sans-serif;
   color: black;
-  font-size: 18px;
-  margin-top: -13px;
+  font-size: 15px;
+  margin-top: -10px;
   transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);;
   cursor: text;
   margin-left: 0;
@@ -147,9 +136,9 @@ margin: 0 auto;
 
 .land-p{
   font-weight: bolder;
-  font-size: 35px;
+  font-size: 30px;
   color: black;
-  padding-bottom:20px;
+  padding-bottom:10px;
 }
 
 
@@ -173,3 +162,4 @@ font-size:30px;
   margin: 30px;
   padding-top: 40px;
 }
+©
