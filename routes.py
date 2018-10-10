@@ -37,14 +37,5 @@ def webScraperTool():
  print(settings.jsonObject)
  return jsonify(settings.jsonObject)
 
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
