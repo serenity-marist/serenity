@@ -20,6 +20,10 @@ def home():
 def login():
     return render_template('login.html')
 
+@app.route('/loading')
+def loading():
+    return render_template('loading.html')
+
 @app.route('/test', methods =['GET','POST'])
 def test():
     return "data"
