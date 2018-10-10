@@ -23,27 +23,3 @@ $(function() {
         });
     });
 });
-
-
-
-
-
-
-
-//
-// $(function() {
-//   var form = $('#creds');
-//   $(form).submit(function(event) {
-//   // Stop the browser from submitting the form.
-//   event.preventDefault();
-//   var formData = $(form).serialize();
-//
-//   alert(formData);
-//   // Submit the form using AJAX.
-//   $.ajax({
-//     type: 'POST',
-//     url: $(form).attr('action'),
-//     data: formData
-//   })
-//
-// });

@@ -11,10 +11,7 @@ app = Flask(__name__)
 def home():
  return render_template('landing.html')
 
-# @app.route('/webScraperTool.html')
-# def webScraperTool():
-#  import DegreeWorksStudentView
-#  return render_template('webScraperTool.html')
+
 
 @app.route('/login')
 def login():
