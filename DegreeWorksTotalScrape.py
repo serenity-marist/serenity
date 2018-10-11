@@ -98,7 +98,9 @@ def studentInfoScrape(soup):
 
   finalValue = primValue + secondColumn # resulting array
   finalInfo = primInfo + thirdColumn    # resulting array
-  #Vstacked dataframe if converted to a json file 
+  finalInfo = [x for x in finalInfo if str(x) != 'nan']
+  finalValue = [x for x in finalValue if str(x) != 'nan']
+  #Vstacked dataframe if converted to a json file
     # studentInfo = np.vstack((finalValue, finalInfo)).T
     # studentInfo = studentInfo.tolist()
 
@@ -107,14 +109,14 @@ def studentInfoScrape(soup):
 
     # studentInfoFileJSON = 'SerenityStudentInfo.json'
   studentDict = dict(zip(finalValue, finalInfo))
-  studentJSON = json.dumps(studentDict)
+  # studentJSON = json.dumps(studentDict)
     # studentJSON = studentInfoFinalDf.to_json(orient='records')
-  return studentJSON
+  return studentDict
 
 ################# END STUDENT VIEW SCRAPE #################
 
 ##Calling the function to get student info!!
-settings.jsonObject = studentInfoScrape(soup)
+settings.jsonObjects.append(studentInfoScrape(soup))
 
 ################# CORE REQ SCRAPE #########################
 def coreReqScrape(soup):
@@ -125,20 +127,21 @@ def coreReqScrape(soup):
     reqCourses.append(reqString.text)
 
   coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
-  
-  coreReqDf = pd.DataFrame(coreReqs)
-  coreReqDf.columns = ['Core Requirement']
 
-  #JSON of DataFrame is default, CSV commented out
-  # coreReqFileCSV = 'SerenityCoreReqs.csv'
-  # coreReqDf.to_csv(coreReqFileCSV, index=False)
-  # coreReqFileJSON = 'SerenityCoreReqs.json'
-  coreReqJSON = coreReqDf.to_json(orient='records')
-  return coreReqJSON
+  if not coreReqs: #Exception handler
+    return
+  else: 
+    coreRTitle = []
+    for x in coreReqs:
+        coreRTitle.append("Core Class Required")
+    coreDict = dict(zip(coreRTitle, coreReqs))
+
+  return coreDict
+  # return coreReqJSON
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
-# settings.jsonObjects.append(coreReqScrape(soup))
+settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
@@ -171,7 +174,7 @@ def creditProgressScrape(soup):
     creditTitles = degreeName + concentrations + minorArray
 
   totalCredits = []
-  completedCredits = [] 
+  completedCredits = []
   i = 0
   while i < len(credits):
     if i % 2 == 0:
@@ -184,18 +187,20 @@ def creditProgressScrape(soup):
   #Resulting array is totalCredits and completedCredits, block should be here
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
-  progressDf = pd.DataFrame(creditsProgress,columns=['Title', 'Credits Completed', 'Total Needed'])
+  progressDf = pd.DataFrame(creditsProgress,columns=['Degree Title', 'Credits Completed', 'Total Needed'])
 
   #JSON of DataFrame is default, CSV commented out
   # majMinFileCSV = 'SerenityMajMin.csv'
   # progressDf.to_csv(majMinFileCSV, index=False)
   # majMinFileJSON = 'SerenityMajMin.json'
-  progressJSON = progressDf.to_json(orient='records')
+  progressJSON = progressDf.to_dict(orient='records')
   return progressJSON
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
 ##Calling the function to get credit progress info!!
-# settings.jsonObjects.append(creditProgressScrape(soup))
+progressFinalJSON = creditProgressScrape(soup)
+for x in progressFinalJSON:
+  settings.jsonObjects.append(x)
 
 ################# CURRENT CLASSES SCRAPE ##################
 def currClassScrape(soup):
@@ -228,18 +233,20 @@ def currClassScrape(soup):
   currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
   currClassDataStack = currClassDataStack.tolist() #Resulting array
 
-  currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Course No', 'Course Title', 'Credit Value'])
+  currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Current Course No', 'Current Course Title', 'Current Credit Value'])
 
   #JSON of DataFrame is default, CSV commented out
   # currClassFileCSV = 'SerenityCurrClass.csv'
   # currClassInfoDf.to_csv(currClassFileCSV, index=False)
   # currClassFileJSON = 'SerenityCurrClass.json'
-  currClassJSON = currClassInfoDf.to_json(orient='records')
+  currClassJSON = currClassInfoDf.to_dict(orient='records')
   return currClassJSON
 ################# END CURR CLASSES SCRAPE ##################
 
 ##Calling the function to get curr class info!!
-# settings.jsonObjects.append(currClassScrape(soup))
+currClassFinalJSON = currClassScrape(soup)
+for x in currClassFinalJSON:
+  settings.jsonObjects.append(x)
 
 ###################### PATHWAY SCRAPE ######################
 def pathwayScrape(soup):
@@ -249,20 +256,22 @@ def pathwayScrape(soup):
   #In this case the exception might be different. Check if functionality for checking empty table
   pathwayTable = pathwaySoup.find_all('table')[0]
   pathwayDf = pd.read_html(str(pathwayTable))[0]
-  pathwayDf.columns = ['Course No', 'Course Title', 'Grade', 'Credits', 'Semester']
+  
+  pathwayDf.columns = ['Pathway No', 'Pathway Title', 'Pathway Grade', 'Pathway Credits', 'Pathway Year']
+
+  pathwayJSON = pathwayDf.to_dict(orient="records")
 
   #JSON of DataFrame is default, CSV commented out
-  pathwayFileJSON = 'SerenityPathway.json'
-  pathwayJSON = pathwayDf.to_json(orient='records')
+  # pathwayFileJSON = 'SerenityPathway.json'
+  # pathwayJSON = pathwayDf.to_json(orient='records')
   return pathwayJSON
-
-  # pathwayFileCSV = 'SerenityPathway.csv'
-  # pathwayDf.to_json(pathwayFileCSV, index=False)
 
 ###################### END PWAY SCRAPE ######################
 
 # Calling the function to get pathway  info!!
-# settings.jsonObjects.append(pathwayScrape(soup))
+finalPathwayJSON = pathwayScrape(soup)
+for x in finalPathwayJSON:
+  settings.jsonObjects.append(x)
 
 ################ CLOSE SESSION ######################
 
