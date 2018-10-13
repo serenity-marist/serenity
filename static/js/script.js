@@ -8,8 +8,8 @@ $(function() {
             data: submissionData,
             type: 'POST',
             success: function(body){
-              var parse = JSON.parse(body);
-              var {College, Major, Level, Student,ID,Classification} = parse
+              console.log(body);
+              var {College, Major, Level, Student,ID,Classification} = body
                 $(".main-content").empty();
                 $(".main-content").append("<h1> Success </h1>")
                 $(".main-content").append(`<p> ${Student}: ${ID}</p>`)

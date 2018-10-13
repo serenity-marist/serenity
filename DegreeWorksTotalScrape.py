@@ -21,7 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
-driver = webdriver.Chrome(executable_path='/Users/AlexaJ/anaconda3/bin/chromedriver')
+driver = webdriver.Chrome(executable_path='./chromedriver')
     #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
@@ -131,7 +131,7 @@ def coreReqScrape(soup):
 
   if not coreReqs: #Exception handler
     return
-  else: 
+  else:
     coreRTitle = []
     for x in coreReqs:
         coreRTitle.append("Core Class Required")
@@ -261,7 +261,7 @@ def pathwayScrape(soup):
   #In this case the exception might be different. Check if functionality for checking empty table
   pathwayTable = pathwaySoup.find_all('table')[0]
   pathwayDf = pd.read_html(str(pathwayTable))[0]
-  
+
   pathwayDf.columns = ['Pathway No', 'Pathway Title', 'Pathway Grade', 'Pathway Credits', 'Pathway Year']
 
   pathwayJSON = pathwayDf.to_dict(orient="records")
