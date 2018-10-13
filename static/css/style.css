@@ -160,6 +160,10 @@ font-size:30px;
 .log-seg{
   display:none;
 }
+.loader{
+  display:none;
+  text-align:center;
+}
 .img-wrapper.animated.bounce.infinite{
   margin: 30px;
   padding-top: 40px;

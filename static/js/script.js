@@ -7,8 +7,11 @@ $(function() {
     $(".main-inside").hide();
     $(".log-seg").show();
 
-  })
+  });
     $('#submitBtn').click(function() {
+
+      $(".log-seg").hide();
+      loaderShow();
       var submissionData = $('#creds').serialize()
         $.ajax({
             url: '/webScraperTool',
@@ -54,12 +57,22 @@ $(function() {
 
             },
             complete: function(body){
-              console.log(localStorage);
+              loaderDelete();
 
 
             }
         });
     });
+
+
+function loaderShow(){
+  $(".loader").show();
+
+}
+
+function loaderDelete(){
+  $(".loader").hide();
+}
 
 
 });
