@@ -21,7 +21,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
-driver = webdriver.Chrome(executable_path='./chromedriver')
+
+driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
     #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
@@ -143,7 +144,7 @@ def coreReqScrape(soup):
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
-settings.jsonObjects.append(coreReqScrape(soup))
+# settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
