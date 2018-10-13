@@ -16,10 +16,10 @@ $(function() {
                 $(".main-content").append(`${College} ${Major}: ${Level}`)
 
 
-
             },
             error: function(body){
               $(".main-content").prepend(`<h1> There was an error logging you in! Please try again</h1>`);
+
 
 
 
