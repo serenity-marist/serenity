@@ -1,6 +1,13 @@
 
 
 $(function() {
+
+
+  $(".cont-btn").click(function(){
+    $(".main-inside").hide();
+    $(".log-seg").show();
+
+  })
     $('#submitBtn').click(function() {
       var submissionData = $('#creds').serialize()
         $.ajax({
@@ -8,13 +15,35 @@ $(function() {
             data: submissionData,
             type: 'POST',
             success: function(body){
-              console.log(body);
-              var {College, Major, Level, Student,ID,Classification} = body
+              var studInfo  = body[0];
+              var totalCredComplete = body[1];
+              var concentrationCredComplete = body[2]
+              var pathwayCred = body[3]
+              for(var i=0; i<totalCredComplete; i++){
+                var  {title, completedCredits, totalCredits}  = totalCredComplete[i]
+                // append totalCredits to the proper placement
+              }
+              for(var i=0; i<concentrationCredComplete; i++){
+                var  {currCourseNum, currCourseTitle, currCreditValue}  = concentrationCredComplete[i]
+              }
+              for(var i=0; i<pathwayCred; i++){
+                var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
+              }
+              var {College, Major, Level, Student,ID,Classification} = studInfo;
                 $(".main-content").empty();
                 $(".main-content").append("<h1> Success </h1>")
                 $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
                 $(".main-content").append(`${College} ${Major}: ${Level}`)
 
+
+
+              //localStorage["college"] = body[0]["College"]
+              // var {College, Major, Level, Student,ID,Classification} = body
+              //   $(".main-content").empty();
+              //   $(".main-content").append("<h1> Success </h1>")
+              //   $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
+              //   $(".main-content").append(`${College} ${Major}: ${Level}`)
+              //
 
             },
             error: function(body){
@@ -23,10 +52,14 @@ $(function() {
 
 
 
+            },
+            complete: function(body){
+              console.log(localStorage);
+
+
             }
         });
     });
 
 
-    function extractJSONObjects(){}
 });

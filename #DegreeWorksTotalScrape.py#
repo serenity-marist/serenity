@@ -40,6 +40,8 @@ password.send_keys(passwordStr)
 
 nextButton = driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
 nextButton.click()
+
+
 ################# END DRIVER CODE PORTION #################
 
 ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
@@ -85,7 +87,35 @@ settings.jsonObjects = []
 currSem = semSsn + " " + str(semYear)
 ################# END GEN VARIABLES ###################
 
+
+
+
+
 ################# STUDENT VIEW SCRAPE #################
+
+
+
+def runScrape():
+  ##Calling the function to get student info!! 
+  settings.jsonObjects.append(studentInfoScrape(soup))
+  ##Calling the function to get core req info!!                                                                                                                                                            
+  settings.jsonObjects.append(coreReqScrape(soup))
+  ##Calling the function to get credit progress info!!                                                                                                                                                     
+  progressFinalJSON = creditProgressScrape(soup)
+  for x in progressFinalJSON:
+    # x = json.dumps(x)                                                                                                                                                                                    
+    settings.jsonObjects.append(x)
+  ##Calling the function to get curr class info!!                                                                                                                                                          
+  currClassFinalJSON = currClassScrape(soup)
+  for x in currClassFinalJSON:
+    # x = json.dumps(x)                                                                                                                                                                                    
+    settings.jsonObjects.append(x)
+  # Calling the function to get pathway  info!!                                                                                                                                                            
+  finalPathwayJSON = pathwayScrape(soup)
+  for x in finalPathwayJSON:
+    # x = json.dumps(x)                                                                                                                                                                                    
+    settings.jsonObjects.append(x)
+
 
 def studentInfoScrape(soup):
   studentTable = soup.find("table", attrs={"class": "Inner"})
@@ -117,8 +147,6 @@ def studentInfoScrape(soup):
 
 ################# END STUDENT VIEW SCRAPE #################
 
-##Calling the function to get student info!!
-settings.jsonObjects.append(studentInfoScrape(soup))
 
 ################# CORE REQ SCRAPE #########################
 def coreReqScrape(soup):
@@ -143,8 +171,6 @@ def coreReqScrape(soup):
   # return coreReqJSON
 ################# END CORE REQ SCRAPE ######################
 
-##Calling the function to get core req info!!
-# settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
@@ -190,7 +216,7 @@ def creditProgressScrape(soup):
   #Resulting array is totalCredits and completedCredits, block should be here
   creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
   creditsProgress = creditsProgress.tolist()
-  progressDf = pd.DataFrame(creditsProgress,columns=['title', 'completedCredits', 'totalNeeded'])
+  progressDf = pd.DataFrame(creditsProgress,columns=['Degree Title', 'Credits Completed', 'Total Needed'])
 
   #JSON of DataFrame is default, CSV commented out
   # majMinFileCSV = 'SerenityMajMin.csv'
@@ -200,13 +226,6 @@ def creditProgressScrape(soup):
   return progressJSON
 ################# END MAJO/MIN/DEGREE SCRAPE #############
 
-##Calling the function to get credit progress info!!
-progressFinalJSON = creditProgressScrape(soup)
-arr = []
-for x in progressFinalJSON:
-  # x = json.dumps(x)
-  arr.append(x)
-settings.jsonObjects.append(arr)
 
 ################# CURRENT CLASSES SCRAPE ##################
 def currClassScrape(soup):
@@ -239,7 +258,7 @@ def currClassScrape(soup):
   currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
   currClassDataStack = currClassDataStack.tolist() #Resulting array
 
-  currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['currCourseNum', 'currCourseTitle', 'currCreditValue'])
+  currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['Current Course No', 'Current Course Title', 'Current Credit Value'])
 
   #JSON of DataFrame is default, CSV commented out
   # currClassFileCSV = 'SerenityCurrClass.csv'
@@ -250,13 +269,7 @@ def currClassScrape(soup):
   return currClassJSON
 ################# END CURR CLASSES SCRAPE ##################
 
-##Calling the function to get curr class info!!
-currClassFinalJSON = currClassScrape(soup)
-arr = []
-for x in currClassFinalJSON:
-  # x = json.dumps(x)
-  arr.append(x)
-settings.jsonObjects.append(arr)
+
 
 ###################### PATHWAY SCRAPE ######################
 def pathwayScrape(soup):
@@ -267,7 +280,7 @@ def pathwayScrape(soup):
   pathwayTable = pathwaySoup.find_all('table')[0]
   pathwayDf = pd.read_html(str(pathwayTable))[0]
 
-  pathwayDf.columns = ['pathwayNum', 'pathwayTitle', 'pathwayGrade', 'pathwayCred', 'pathwayYear']
+  pathwayDf.columns = ['Pathway No', 'Pathway Title', 'Pathway Grade', 'Pathway Credits', 'Pathway Year']
 
   pathwayJSON = pathwayDf.to_dict(orient="records")
 
@@ -278,13 +291,8 @@ def pathwayScrape(soup):
 
 ###################### END PWAY SCRAPE ######################
 
-# Calling the function to get pathway  info!!
-finalPathwayJSON = pathwayScrape(soup)
-arr = []
-for x in finalPathwayJSON:
-  # x = json.dumps(x)
-  arr.append(x)
-settings.jsonObjects.append(arr)
+
+
 
 ################ CLOSE SESSION ######################
 
