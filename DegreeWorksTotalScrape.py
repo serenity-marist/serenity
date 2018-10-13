@@ -111,6 +111,7 @@ def studentInfoScrape(soup):
   studentDict = dict(zip(finalValue, finalInfo))
   # studentJSON = json.dumps(studentDict)
     # studentJSON = studentInfoFinalDf.to_json(orient='records')
+  # studentDict = json.dumps(studentDict) Dumps in func and for loops if double quotes wanted
   return studentDict
 
 ################# END STUDENT VIEW SCRAPE #################
@@ -135,6 +136,7 @@ def coreReqScrape(soup):
     for x in coreReqs:
         coreRTitle.append("Core Class Required")
     coreDict = dict(zip(coreRTitle, coreReqs))
+    # coreDict = json.dumps(coreDict)
 
   return coreDict
   # return coreReqJSON
@@ -200,6 +202,7 @@ def creditProgressScrape(soup):
 ##Calling the function to get credit progress info!!
 progressFinalJSON = creditProgressScrape(soup)
 for x in progressFinalJSON:
+  # x = json.dumps(x)
   settings.jsonObjects.append(x)
 
 ################# CURRENT CLASSES SCRAPE ##################
@@ -240,12 +243,14 @@ def currClassScrape(soup):
   # currClassInfoDf.to_csv(currClassFileCSV, index=False)
   # currClassFileJSON = 'SerenityCurrClass.json'
   currClassJSON = currClassInfoDf.to_dict(orient='records')
+
   return currClassJSON
 ################# END CURR CLASSES SCRAPE ##################
 
 ##Calling the function to get curr class info!!
 currClassFinalJSON = currClassScrape(soup)
 for x in currClassFinalJSON:
+  # x = json.dumps(x)
   settings.jsonObjects.append(x)
 
 ###################### PATHWAY SCRAPE ######################
@@ -271,6 +276,7 @@ def pathwayScrape(soup):
 # Calling the function to get pathway  info!!
 finalPathwayJSON = pathwayScrape(soup)
 for x in finalPathwayJSON:
+  # x = json.dumps(x)
   settings.jsonObjects.append(x)
 
 ################ CLOSE SESSION ######################
