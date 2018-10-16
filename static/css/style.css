@@ -157,8 +157,17 @@ margin-top: 30px;
 font-size:30px;
 }
 
-
 .img-wrapper.animated.bounce.infinite{
   margin: 30px;
   padding-top: 40px;
+}
+
+/* Dashboard css content*/
+.dash-content {
+
+}
+
+.dash-head {
+  margin: 0 auto;
+  width: 50%;
 }

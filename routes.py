@@ -24,6 +24,10 @@ def login():
 def loading():
     return render_template('loading.html')
 
+@app.route('/dashboard')
+def landing():
+    return render_template('dashboard.html')
+
 @app.route('/test', methods =['GET','POST'])
 def test():
     return "data"
