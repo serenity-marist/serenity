@@ -127,12 +127,9 @@ def coreReqScrape(soup):
     reqCourses.append(reqString.text)
 
   coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
-<<<<<<< HEAD
-=======
 
   coreReqDf = pd.DataFrame(coreReqs)
   coreReqDf.columns = ['Core Requirement']
->>>>>>> 7a6d2896da886c63e83aee02d41cfa83ce3f8594
 
   if not coreReqs: #Exception handler
     return
