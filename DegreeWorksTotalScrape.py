@@ -21,7 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
-driver = webdriver.Chrome(executable_path='/Users/AlexaJ/anaconda3/bin/chromedriver')
+driver = webdriver.Chrome(executable_path='/Users/garycoltrane/desktop/chromedriver')
     #Url to DWORKS
 url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
 driver.get(url)
@@ -127,6 +127,12 @@ def coreReqScrape(soup):
     reqCourses.append(reqString.text)
 
   coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
+<<<<<<< HEAD
+=======
+
+  coreReqDf = pd.DataFrame(coreReqs)
+  coreReqDf.columns = ['Core Requirement']
+>>>>>>> 7a6d2896da886c63e83aee02d41cfa83ce3f8594
 
   if not coreReqs: #Exception handler
     return
