@@ -1,8 +1,10 @@
+import os
+
 global email
 email = ""
 global password
 password = ""
 
 global jsonObjects
-global jsonObject
-jsonObject = ""
+global dirPath
+dirpath = os.getcwd()
