@@ -130,10 +130,6 @@ def coreReqScrape(soup):
 
   coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
 
-<<<<<<< HEAD
-  coreReqDf = pd.DataFrame(coreReqs)
-  coreReqDf.columns = ['Core Requirement']
-
   if not coreReqs: #Exception handler
     return
   else:
@@ -148,7 +144,7 @@ def coreReqScrape(soup):
 ################# END CORE REQ SCRAPE ######################
 
 ##Calling the function to get core req info!!
-settings.jsonObjects.append(coreReqScrape(soup))
+# settings.jsonObjects.append(coreReqScrape(soup))
 
 ################# MAJO/MIN/DEGREE SCRAPE ###################
 def creditProgressScrape(soup):
@@ -250,6 +246,7 @@ def currClassScrape(soup):
   # currClassInfoDf.to_csv(currClassFileCSV, index=False)
   # currClassFileJSON = 'SerenityCurrClass.json'
   currClassJSON = currClassInfoDf.to_dict(orient='records')
+
   return currClassJSON
 ################# END CURR CLASSES SCRAPE ##################
 
