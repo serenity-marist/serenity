@@ -11,6 +11,7 @@ app = Flask(__name__)
 def home():
  return render_template('landing.html')
 
+<<<<<<< HEAD
 # @app.route('/webScraperTool.html')
 # def webScraperTool():
 #  import DegreeWorksStudentView
@@ -31,6 +32,9 @@ def landing():
 @app.route('/test', methods =['GET','POST'])
 def test():
     return "data"
+=======
+
+>>>>>>> 071ba8b171ac44122b88a5528370bcb4bd1c0773
     # return _test(request.form["test"])
 
 # @app.route("toolPage", methods = ['POST'])
@@ -42,7 +46,7 @@ def webScraperTool():
  settings.email = request.form['email'];
  settings.password = request.form['password'];
  import DegreeWorksTotalScrape
- #print(settings.jsonObjects)
+#  print(settings.jsonObjects)
  return jsonify(settings.jsonObjects)
 
 if __name__ == '__main__':
