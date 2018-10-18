@@ -11,6 +11,10 @@ app = Flask(__name__)
 def home():
  return render_template('landing.html')
 
+@app.route('/dashboard')
+def dashboard():
+ return render_template('dashboard.html')
+
 # return _test(request.form["test"])
 # @app.route("toolPage", methods = ['POST'])
 #  def toolPage():
