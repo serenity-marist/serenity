@@ -36,7 +36,10 @@ $(function() {
                 $(".main-content").append("<h1> Success </h1>")
                 $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
                 $(".main-content").append(`${College} ${Major}: ${Level}`);
-                window.location.href="/dashboard"
+
+                $(".smart-man").hide();
+                $(".very-smart").show();
+                // window.location.href="/dashboard"
 
 
 
