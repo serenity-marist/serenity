@@ -11,32 +11,7 @@ app = Flask(__name__)
 def home():
  return render_template('landing.html')
 
-<<<<<<< HEAD
-# @app.route('/webScraperTool.html')
-# def webScraperTool():
-#  import DegreeWorksStudentView
-#  return render_template('webScraperTool.html')
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/loading')
-def loading():
-    return render_template('loading.html')
-
-@app.route('/dashboard')
-def landing():
-    return render_template('dashboard.html')
-
-@app.route('/test', methods =['GET','POST'])
-def test():
-    return "data"
-=======
-
->>>>>>> 071ba8b171ac44122b88a5528370bcb4bd1c0773
-    # return _test(request.form["test"])
-
+# return _test(request.form["test"])
 # @app.route("toolPage", methods = ['POST'])
 #  def toolPage():
 
