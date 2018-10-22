@@ -168,4 +168,140 @@ font-size:30px;
   margin: 30px;
   padding-top: 40px;
 }
-©
+
+/* Dashboard css content*/
+.dash.content {
+  width: 100%;
+  height: 100%;
+  display: block;
+  max-width: 1280px;
+}
+
+.dash.head {
+  width: 100%;
+  height: 30%;
+  z-index: 1;
+  position: relative;
+}
+
+.dash.head.content {
+  width: 50%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 15px;
+}
+
+.black.headblock {
+  background-color: #373737;
+  width: 100%;
+  height: 50px;
+  margin-top: -5px;
+}
+
+.black.headblock.p {
+  color: #f0f0f0;
+  text-align: center;
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.yellow.headblock {
+  background-color: #f0f0f0; opacity: 0.6;
+  width: 90%;
+  height: 30px;
+  margin-top: -10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dash.main.content {
+  background-color: #f0f0f0;
+  width: 100%;
+  min-height: 960px;
+  height: 100%;
+  z-index: 0;
+  position: relative;
+}
+
+.dash.content.left.menu {
+  width: 25%;
+  color: #373737;
+  float: left;
+}
+
+.dash.ui.very.relaxed.list {
+  margin: 0 auto;
+  width: 50%;
+  padding-top: 5em;
+}
+
+.dash.content.right.content {
+  width: 75%;
+  float: left;
+  padding-top: 4em;
+  overflow-y: scroll;
+}
+
+.dash.student.view {
+  width: 100%;
+  float: left;
+  display: block;
+}
+
+.dash.student.ui.card {
+  text-align: center;
+  padding-bottom: 1.3em;
+  padding-top: 1.3em;
+  width: 25%;
+  float: left;
+}
+
+.dash.student.information {
+  width: 60%;
+  float: left;
+  display:block;
+}
+
+.dash.stu.table {
+  padding-left: 2em;
+}
+
+.dash.current.classes {
+  display:block;
+  float:left;
+  width: 100%;
+  padding-top: 2em;
+}
+
+.dash.three.and.boxes {
+  width: 100%;
+}
+
+.dash.three.butts {
+  width: 20%;
+  float:left;
+  display:block;
+}
+
+.button.ui.button.yellow, .button.ui.button.red, .button.ui.button.teal {
+  width: 150px;
+  margin-top: 2em;
+}
+
+.dash.boxes {
+  width: 65%;
+  float:left;
+  display:block;
+}
+/*
+.dash.foot {
+  width: 100%;
+  height: 10%;
+} */
+
+
+
+.dashboard{
+  display: none;
+}
