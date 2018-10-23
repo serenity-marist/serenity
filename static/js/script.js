@@ -52,14 +52,18 @@ function loaderDelete(){
 
 
 function scrapeData(){
+
   $(".log-seg").hide();
   loaderShow("Loading dashboard...");
     $.ajax({
         url: '/webScraperTool',
         type: 'POST',
         success: function(body){
+
           console.log(body);
-          $(".main-content").empty();
+          $(".main-content-wrapper").hide();
+          $(".dashboard").show();
+        //  $(".main-content").empty();
 
           var studInfo  = body[0];
           var totalCredComplete = body[1];
