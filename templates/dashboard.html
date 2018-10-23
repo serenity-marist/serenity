@@ -46,9 +46,9 @@
             <a class="header">Degree Progress</a>
           </div>
           <div class="description">
-            Major: ## Credits<br />
-            Minor: ## Credits<br />
-            Degree: ## Credits<br />
+            Completed Credits: <div id="completedCredits"></div>
+            Still Required: <div id="creditsLeft"></div>
+            Total Needed: 120
           </div>
         </div>
 
@@ -65,49 +65,49 @@
                   <td class="collapsing">
                     <i class="user icon"></i> Student
                   </td>
-                  <td>Alexa Javellana</td>
+                  <td id="studentName"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="id card outline icon"></i> ID
                   </td>
-                  <td>########</td>
+                  <td id="id"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="hourglass outline icon"></i> Classification
                   </td>
-                  <td>Senior</td>
+                  <td id="year"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="address book outline icon"></i> Advisor
                   </td>
-                  <td>Professor</td>
+                  <td id="advisor"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="font icon"></i> Overall GPA
                   </td>
-                  <td>4.00</td>
+                  <td id="gpa">4.00</td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="balance scale icon"></i> Major(s)
                   </td>
-                  <td>Computer Science</td>
+                  <td id="majors"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="book icon"></i> Minor(s)
                   </td>
-                  <td>Business</td>
+                  <td id="minors"></td>
                 </tr>
                 <tr>
                   <td class="collapsing">
                     <i class="font icon"></i> Concentration
                   </td>
-                  <td>Software Development</td>
+                  <td id="concentration"></td>
                 </tr>
               </tbody>
             </table>
@@ -173,9 +173,9 @@
 
       <div class="dash three and boxes">
         <div class="dash three butts">
-        <button class="ui yellow button">Major</button>
-        <button class="ui teal button">Minor</button>
-        <button class="ui red button">Pathway</button>
+        <button class="ui yellow button" id="majorBtn">Major</button>
+        <button class="ui teal button" id="minorBtn">Minor</button>
+        <button class="ui red button" id="pathwayBtn">Pathway</button>
         </div>
 
         <div class="dash boxes">
