@@ -4,7 +4,7 @@ global email
 email = ""
 global password
 password = ""
-
+global driver
 global jsonObjects
 global dirPath
 dirpath = os.getcwd()
