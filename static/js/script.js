@@ -68,15 +68,19 @@ function scrapeData(){
           var totalCredComplete = body[1];
           var concentrationCredComplete = body[2]
           var pathwayCred = body[3]
-          totalCredComplete.forEach(function(val){
-            var {completedCredits, title, totalNeeded } = val;
-            console.log(completedCredits);
-            console.log(title);
-            console.log(totalNeeded);
-            $(".main-content").append(`<p> Completed Credits: in ${title}: ${completedCredits} </p> `)
-            $(".main-content").append(`<p> Total Credits Needed: ${totalNeeded} </p>`)
 
-          });
+        var {completedCredits, title, totalNeeded } = totalCredComplete[0];
+        $("#completedCredits").text(completedCredits);
+        $("#creditsLeft").text(totalNeeded - completedCredits);
+      //  $(".description").text(`Completed Credits: ${completedCredits} `)
+          // totalCredComplete.forEach(function(val){
+          //
+          //   var {completedCredits, title, totalNeeded } = val;
+          //   console.log(val);
+          //   $(".main-content").append(`<div class='description'> Completed Credits: in ${title}: ${completedCredits} </p> `)
+          //   $(".main-content").append(`<p> Total Credits Needed: ${totalNeeded} </p>`)
+          //
+          // });
           for(var i=0; i<totalCredComplete; i++){
             console.log("test");
             // var  {title, completedCredits, totalCredits}  = totalCredComplete[i]
@@ -98,7 +102,16 @@ function scrapeData(){
           for(var i=0; i<pathwayCred; i++){
             var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
           }
-          var {College, Major, Level, Student,ID,Classification} = studInfo;
+          var {College, Concentration, Major, Level, Student,ID,Classification, Advisors, Minor} = studInfo;
+          console.log(studInfo);
+          $("#studentName").text(Student);
+          $("#id").text(ID);
+          $("#year").text(Classification);
+          $("#majors").text(Major);
+          $("#advisor").text(Advisors);
+          $("#minors").text(Minor);
+          $("#concentration").text(Concentration);
+          $("#gpa").text(studInfo["Overall GPA"])
             $(".main-content").append("<h1> Success </h1>")
             $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
             $(".main-content").append(`${College} ${Major}: ${Level}`)
