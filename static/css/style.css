@@ -174,7 +174,6 @@ font-size:30px;
   width: 100%;
   height: 100%;
   display: block;
-  max-width: 1280px;
 }
 
 .dash.head {
@@ -191,7 +190,7 @@ font-size:30px;
   margin-right: auto;
   padding-top: 15px;
 }
- 
+
 .black.headblock {
   background-color: #373737;
   width: 100%;
@@ -225,7 +224,7 @@ font-size:30px;
 }
 
 .dash.content.left.menu {
-  width: 25%; 
+  width: 25%;
   color: #373737;
   float: left;
 }
