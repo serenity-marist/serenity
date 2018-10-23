@@ -2,7 +2,6 @@
 
 $(function() {
 
-
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
     $(".log-seg").show();
