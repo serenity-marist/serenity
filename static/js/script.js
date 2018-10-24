@@ -81,7 +81,7 @@ $(function() {
           // console.log(currCourseNum);
           // console.log(currCourseTitle);
           // console.log(currCreditValue);
-          $('#myTable tr:last').after(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
+          $('#currClassTable tr:last').after(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
         });
 
         for(var i=0; i<pathwayCred; i++){

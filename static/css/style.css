@@ -236,28 +236,29 @@ font-size:30px;
 }
 
 .dash.content.right.content {
-  width: 75%;
+  width: 70%;
+  height: 100%;
   float: left;
   padding-top: 4em;
-  overflow-y: scroll;
 }
 
 .dash.student.view {
   width: 100%;
+  height: 43%;
   float: left;
   display: block;
 }
 
 .dash.student.ui.card {
   text-align: center;
-  padding-bottom: 1.3em;
-  padding-top: 1.3em;
+  height: 100%;
   width: 25%;
   float: left;
 }
 
 .dash.student.information {
-  width: 60%;
+  width: 75%;
+  height: 100%;
   float: left;
   display:block;
 }
@@ -267,10 +268,22 @@ font-size:30px;
 }
 
 .dash.current.classes {
+  padding-top: 1em;
   display:block;
   float:left;
   width: 100%;
-  padding-top: 2em;
+  height: 35%;
+}
+
+#classHeader {
+  width: 100%;
+  height: 10%; 
+}
+
+#classTable {
+  width: 100%; 
+  height: 90%;
+  overflow-y: scroll;
 }
 
 .dash.three.and.boxes {
@@ -289,7 +302,7 @@ font-size:30px;
 }
 
 .dash.boxes {
-  width: 65%;
+  width: 80%;
   float:left;
   display:block;
 }
