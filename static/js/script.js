@@ -1,11 +1,10 @@
 
 
 $(function() {
-
+  /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
     $(".log-seg").show();
-
   });
 
   $("#submitBtn").click(function(){
@@ -24,50 +23,41 @@ $(function() {
          loaderDelete();
          $(".log-seg").show();
          $(".main-content").prepend(`<h1> Please provide your correct Marist login credentials.</h1>`);
-
-
        },
        complete: function(){
-
-
        }
      })
-
   })
 
+  function loaderShow(text){
+    $(".load-p").text(text)
+    $(".loader").show();
 
+  }
 
+  function loaderDelete(){
+    $(".loader").hide();
+  }
+  /************* END SINGLE PAGE MARKUP **************/
 
-
-function loaderShow(text){
-  $(".load-p").text(text)
-  $(".loader").show();
-
-}
-
-function loaderDelete(){
-  $(".loader").hide();
-}
-
-
-function scrapeData(){
-
-  $(".log-seg").hide();
-  loaderShow("Loading dashboard...");
-    $.ajax({
+  /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
+  function scrapeData(){
+    $(".log-seg").hide();
+    loaderShow("Loading dashboard...");
+      $.ajax({
         url: '/webScraperTool',
         type: 'POST',
         success: function(body){
 
-          console.log(body);
-          $(".main-content-wrapper").hide();
-          $(".dashboard").show();
+        // console.log(body);
+        $(".main-content-wrapper").hide();
+        $(".dashboard").show();
         //  $(".main-content").empty();
 
-          var studInfo  = body[0];
-          var totalCredComplete = body[1];
-          var concentrationCredComplete = body[2]
-          var pathwayCred = body[3]
+        var studInfo  = body[0];
+        var totalCredComplete = body[1];
+        var currClasses = body[2]
+        var pathwayCred = body[3]
 
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCredits);
@@ -81,40 +71,36 @@ function scrapeData(){
           //   $(".main-content").append(`<p> Total Credits Needed: ${totalNeeded} </p>`)
           //
           // });
-          for(var i=0; i<totalCredComplete; i++){
-            console.log("test");
-            // var  {title, completedCredits, totalCredits}  = totalCredComplete[i]
-            // console.log(title);
+        for(var i=0; i<totalCredComplete; i++){
+          // console.log("test");
+        }
 
-            // append totalCredits to the proper placement
-          }
-          // for(var i=0; i<concentrationCredComplete; i++){
-          //   var  {currCourseNum, currCourseTitle, currCreditValue}  = concentrationCredComplete[i]
-          // }
-          concentrationCredComplete.forEach(function(val){
-            var {currCourseNum, currCourseTitle, currCreditValue} = val
-            console.log(currCourseNum);
-            console.log(currCourseTitle);
-            console.log(currCreditValue);
-            $(".main-content").append(`<p> Course Name: ${currCourseTitle} </p>`)
-            $(".main-content").append(`<p> Course Value: ${currCreditValue}  </p>`)
-          });
-          for(var i=0; i<pathwayCred; i++){
-            var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
-          }
-          var {College, Concentration, Major, Level, Student,ID,Classification, Advisors, Minor} = studInfo;
-          console.log(studInfo);
-          $("#studentName").text(Student);
-          $("#id").text(ID);
-          $("#year").text(Classification);
-          $("#majors").text(Major);
-          $("#advisor").text(Advisors);
-          $("#minors").text(Minor);
-          $("#concentration").text(Concentration);
-          $("#gpa").text(studInfo["Overall GPA"])
-            $(".main-content").append("<h1> Success </h1>")
-            $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
-            $(".main-content").append(`${College} ${Major}: ${Level}`)
+        console.log(currClasses);
+        currClasses.forEach(function(val){
+          var {currCourseNum, currCourseTitle, currCreditValue} = val
+          // console.log(currCourseNum);
+          // console.log(currCourseTitle);
+          // console.log(currCreditValue);
+          $('#myTable tr:last').after(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
+        });
+
+        for(var i=0; i<pathwayCred; i++){
+          var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
+        }
+        /************* POPULATE STUDENT VIEW TABLE AJAX **************/
+        var {College, Concentration, Major, Level, Student, ID, Classification, Advisors, Minor} = studInfo;
+        $("#studentName").text(Student);
+        $("#id").text(ID);
+        $("#year").text(Classification);
+        $("#majors").text(Major);
+        $("#advisor").text(Advisors);
+        $("#minors").text(Minor);
+        $("#concentration").text(Concentration);
+        $("#gpa").text(studInfo["Overall GPA"]);
+        // $(".main-content").append("<h1> Success </h1>")
+        // $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
+        // $(".main-content").append(`${College} ${Major}: ${Level}`)
+
 
         },
         error: function(body){
@@ -122,10 +108,7 @@ function scrapeData(){
         },
         complete: function(body){
           loaderDelete();
-
-
         }
-    });
-}
-
+      });
+  }
 });
