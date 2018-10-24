@@ -8,25 +8,26 @@ $(function() {
   });
 
   $("#submitBtn").click(function(){
-   $(".log-seg").hide();
-     loaderShow("Validating credentials...");
-     var submissionData = $('#creds').serialize();
-     $.ajax({
-       url: '/login',
-       data:submissionData,
-       type: 'POST',
-       success: function(body){
-         loaderDelete();
-          scrapeData();
-       },
-       error: function(body){
-         loaderDelete();
-         $(".log-seg").show();
-         $(".main-content").prepend(`<h1> Please provide your correct Marist login credentials.</h1>`);
-       },
-       complete: function(){
-       }
-     })
+    $(".log-seg").hide();
+      loaderShow("Validating credentials...");
+      var submissionData = $('#creds').serialize();
+      $.ajax({
+        url: '/login',
+        data:submissionData,
+        type: 'POST',
+        success: function(body){
+          loaderDelete();
+            scrapeData();
+        },
+        error: function(body){
+          loaderDelete();
+          $(".log-seg").show();
+          $(".main-content").prepend(`<h1> Please provide your correct Marist login credentials.</h1>`);
+        },
+        complete: function(){
+        }
+      })
+    }
   })
 
   function loaderShow(text){
