@@ -59,9 +59,11 @@ $(function() {
         var currClasses = body[2]
         var pathwayCred = body[3]
 
+        /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCredits);
         $("#creditsLeft").text(totalNeeded - completedCredits);
+        /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
       //  $(".description").text(`Completed Credits: ${completedCredits} `)
           // totalCredComplete.forEach(function(val){
           //
@@ -74,16 +76,14 @@ $(function() {
         for(var i=0; i<totalCredComplete; i++){
           // console.log("test");
         }
-
-        console.log(currClasses);
+        /************* POPULATE AND NUMERATE TOTAL CURRENT CLASSES **************/
         currClasses.forEach(function(val){
           var {currCourseNum, currCourseTitle, currCreditValue} = val
-          // console.log(currCourseNum);
-          // console.log(currCourseTitle);
-          // console.log(currCreditValue);
-          $('#currClassTable tr:last').after(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
+          $('#currClassTable').append(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
         });
 
+        $('.detail.classes').append(currClasses.length);
+        /************* END FOR CURRENT CLASSES **************/
         for(var i=0; i<pathwayCred; i++){
           var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
         }
@@ -97,11 +97,6 @@ $(function() {
         $("#minors").text(Minor);
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
-        // $(".main-content").append("<h1> Success </h1>")
-        // $(".main-content").append(`<p> ${Student}: ${ID}</p>`)
-        // $(".main-content").append(`${College} ${Major}: ${Level}`)
-
-
         },
         error: function(body){
           $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);
