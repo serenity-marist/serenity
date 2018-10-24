@@ -27,7 +27,6 @@ $(function() {
         complete: function(){
         }
       })
-    }
   })
 
   function loaderShow(text){
@@ -50,7 +49,7 @@ $(function() {
         type: 'POST',
         success: function(body){
 
-        // console.log(body);
+        console.log(body);
         $(".main-content-wrapper").hide();
         $(".dashboard").show();
         //  $(".main-content").empty();
@@ -89,12 +88,12 @@ $(function() {
           var  {pathwayNum, pathwayTitle, pathwayGrade}  = pathwayCred[i]
         }
         /************* POPULATE STUDENT VIEW TABLE AJAX **************/
-        var {College, Concentration, Major, Level, Student, ID, Classification, Advisors, Minor} = studInfo;
+        var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
         $("#studentName").text(Student);
         $("#id").text(ID);
         $("#year").text(Classification);
         $("#majors").text(Major);
-        $("#advisor").text(Advisors);
+        $("#advisor").text(Advisor);
         $("#minors").text(Minor);
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
