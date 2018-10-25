@@ -98,8 +98,11 @@ $(function() {
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
+        /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
+        //Must parse completecredits and required because if not it displays out as a percentage of a 
+        //bigger value, making it 1% of the total graph?
         var cc = parseInt(completedCredits);
         var r = parseInt(required);
         function drawChart() {
@@ -108,7 +111,6 @@ $(function() {
             ['Completed',     cc],
             ['Required',      r]
           ]);
-  
           var options = {
             pieHole: 0.5,
             pieSliceTextStyle: {
@@ -118,8 +120,8 @@ $(function() {
           };
           var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
           chart.draw(data, options);
-        }
-        }, /*END OF SUCCESS*/
+        } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+        }, /********** END OF SUCCESS **********/
         error: function(body){
           $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);
         },
