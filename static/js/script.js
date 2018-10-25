@@ -39,7 +39,6 @@ $(function() {
     $(".loader").hide();
   }
   /************* END SINGLE PAGE MARKUP **************/
-
   /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
   function scrapeData(){
     $(".log-seg").hide();
@@ -62,7 +61,8 @@ $(function() {
         /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCredits);
-        $("#creditsLeft").text(totalNeeded - completedCredits);
+        var required = totalNeeded - completedCredits;
+        $("#creditsLeft").text(required);
         /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
       //  $(".description").text(`Completed Credits: ${completedCredits} `)
           // totalCredComplete.forEach(function(val){
@@ -97,7 +97,29 @@ $(function() {
         $("#minors").text(Minor);
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
-        },
+        /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        var cc = parseInt(completedCredits);
+        var r = parseInt(required);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Class', 'Credits'],
+            ['Completed',     cc],
+            ['Required',      r]
+          ]);
+  
+          var options = {
+            pieHole: 0.5,
+            pieSliceTextStyle: {
+              color: 'black',
+            },
+            legend: 'none'
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+          chart.draw(data, options);
+        }
+        }, /*END OF SUCCESS*/
         error: function(body){
           $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);
         },

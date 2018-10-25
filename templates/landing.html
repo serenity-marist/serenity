@@ -12,6 +12,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <script src="/static/js/script.js"> </script>
+  <!-- Google Charts loaded  -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 
@@ -103,17 +105,16 @@
 
         <div class="dash content right content">
           <div class="dash student view">
-            <div class="dash student ui card">
-              <div class="image">
-                <img src="/static/img/circlegraph.png">
+            <div class="degreeProgress">
+              <div id="donutchart">
               </div>
-              <div class="content">
-                <a class="header">Degree Progress</a>
-              </div>
-              <div class="description">
-                Completed Credits: <div id="completedCredits"></div>
-                Still Required: <div id="creditsLeft"></div>
-                Total Needed: 120
+              <div class="ui message degree">
+                <div class="header">
+                  Degree Progress
+                </div>
+                  Completed Credits: <div id="completedCredits"></div>
+                  Still Required: <div id="creditsLeft"></div>
+                  Total Needed: 120
               </div>
             </div>
 
