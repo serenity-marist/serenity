@@ -8,6 +8,11 @@ $(function() {
   });
 
   $("#submitBtn").click(function(){
+
+    if($('input[name="email"]').val() == "" || $('input[name="password"]').val() == ""     ){
+     //append message here
+
+    } else{
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
       var submissionData = $('#creds').serialize();
@@ -22,13 +27,22 @@ $(function() {
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".main-content").prepend(`<h1> Please provide your correct Marist login credentials.</h1>`);
+          $(".main-content").prepend(`<h1> ERROR: Username or Password was incoorect. Please try again..</h1>`);
         },
         complete: function(){
         }
       })
+
+    }
   })
 
+
+$(".log-out").click(function(){
+  window.location.reload();
+})
+$(".print-btn").click(function(){
+  $(".dash.main.content").printThis();
+})
   function loaderShow(text){
     $(".load-p").text(text)
     $(".loader").show();
@@ -90,6 +104,11 @@ $(function() {
         /************* POPULATE STUDENT VIEW TABLE AJAX **************/
         var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
         $("#studentName").text(Student);
+
+        var nameArray = Student.split(",");
+        $("#fname").text(nameArray[nameArray.length-1].trim());
+
+
         $("#id").text(ID);
         $("#year").text(Classification);
         $("#majors").text(Major);

@@ -12,6 +12,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <script src="/static/js/script.js"> </script>
+  <script src="/static/js/printThis.js"> </script>
+
 </head>
 <body>
 
@@ -41,8 +43,9 @@
         <h2>First, please provide your Marist login information.</h2>
       </div>
 
+
       <div class="login-wrapper">
-        <div class="login-seg">
+        <div class="login-seg sign-form">
           <form id="creds" method ="post">
             <div class="floating-input">
               <label>USERNAME</label>
@@ -56,6 +59,30 @@
             <p btn-content> > </p>
             </div>
           </form>
+
+
+
+          <!-- <form class="login-form sign-form">
+
+      <div class="floating-input">
+        <input required="" id="email" name="email" type="text">
+        <label for="email">Email</label>
+      </div>
+
+      <div class="floating-input">
+        <input required="" id="password" name="password" type="password">
+        <label for="password">Password</label>
+      </div>
+
+      <div class="input-button">
+        <a href="password-reset"> Forgot Password </a>
+        <button class="ui button  sign-button"> Sign In</button>
+        <div class="ripple-container"></div>
+      </div>
+      <br>
+    </form> -->
+
+
         </div>
       </div>
     </div>
@@ -81,16 +108,19 @@
   <div class="dashboard">
     <div class="dash content">
       <div class="dash head">
+        <button class="ui button log-out">Log Out</button>
         <div class="dash head content">
         <img src="/static/img/serenitydash.png" style="width:100%;"/>
         <div class="black headblock">
-          <p class="black headblock p">Hey there, Alexa!</p>
+          <p class="black headblock p">Hey there, <span id="fname"> </span></p>
         </div>
         <div class="yellow headblock"></div>
         </div>
       </div>
 
       <div class="dash main content">
+        <div class="ui blue button print-btn">Print Page</div>
+
         <div class="dash content left menu">
           <div class="dash ui very relaxed list">
               <div class="item">Degree Progress</div>
@@ -209,6 +239,7 @@
                 <p></p>
               </div>
             </div>
+
           </div>
 
 
