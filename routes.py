@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+
+from flask import Flask, render_template, session
 from flask import request
 from flask import render_template, redirect, url_for, request, jsonify
 import settings
@@ -7,15 +8,20 @@ import DegreeWorksTotalScrape
 
 
 app = Flask(__name__)
-
+app.secret_key = 'any random string'
 @app.route('/')
 def home():
- return render_template('landing.html')
+  isLogged = False
+  if 'sessionId' in session:
+    isLogged = True
+    settings.email = session['sessionId']
+    settings.password = session['password']
+  return render_template('landing.html', isLogged = isLogged)
 
 @app.route('/dashboard')
 def dashboard():
  return render_template('dashboard.html')
- 
+
 
 
 # return _test(request.form["test"])
@@ -32,10 +38,22 @@ def webScraperTool():
 #  print(settings.jsonObjects)
  return jsonify(settings.jsonObjects)
 
+@app.route('/logout' ,methods=['GET'])
+def logout():
+  session.pop('sessionId', None)
+  DegreeWorksTotalScrape.logout()
+  return "OK"
+
+
 @app.route("/login", methods=['POST'])
 def login():
-   settings.email = request.form['email'];
-   settings.password = request.form['password'];
+   settings.email = request.form['email']
+   settings.password = request.form['password']
+   if settings.email == "" or settings.password == "":
+     settings.email =  session['sessionId']
+     settings.password = session['password']
+   session['sessionId'] = settings.email
+   session['password'] = settings.password
    # import Login
    DegreeWorksTotalScrape.login()
    return jsonify(settings.email)

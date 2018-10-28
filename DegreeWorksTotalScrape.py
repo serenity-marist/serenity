@@ -28,6 +28,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 ##username and password##
+def logout():
+  settings.driver.quit()
+
 def login():
   settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
@@ -295,6 +298,6 @@ def runScrape():
 ################ CLOSE SESSION ######################
 
 #closes the driver session safely
-  settings.driver.close()
+  #
 
 ################ END SCRAPE PYTHON ######################

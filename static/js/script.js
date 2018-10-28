@@ -1,6 +1,14 @@
 
 
 $(function() {
+
+  if(isLogged == "True"){
+    $(".main-inside").hide();
+    logIn();
+  //  scrapeData();
+
+
+  }
   /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
@@ -13,6 +21,26 @@ $(function() {
      //append message here
 
     } else{
+      logIn();
+    }
+  })
+
+
+  $(".print-btn").click(function(){
+    $(".dash.main.content").printThis();
+  })
+
+  function loaderShow(text){
+    $(".load-p").text(text)
+    $(".loader").show();
+
+  }
+
+  function loaderDelete(){
+    $(".loader").hide();
+  }
+
+  function logIn(){
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
       var submissionData = $('#creds').serialize();
@@ -33,24 +61,6 @@ $(function() {
         }
       })
 
-    }
-  })
-
-
-$(".log-out").click(function(){
-  window.location.reload();
-})
-$(".print-btn").click(function(){
-  $(".dash.main.content").printThis();
-})
-  function loaderShow(text){
-    $(".load-p").text(text)
-    $(".loader").show();
-
-  }
-
-  function loaderDelete(){
-    $(".loader").hide();
   }
   /************* END SINGLE PAGE MARKUP **************/
 
