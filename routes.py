@@ -42,7 +42,7 @@ def webScraperTool():
 def logout():
   session.pop('sessionId', None)
   DegreeWorksTotalScrape.logout()
-  return "OK"
+  return direct("/")
 
 
 @app.route("/login", methods=['POST'])
