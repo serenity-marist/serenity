@@ -27,7 +27,8 @@ $(function() {
 
 
   $(".print-btn").click(function(){
-    $(".dash.main.content").printThis();
+    // $(".dash.main.content").printThis();
+    window.print();
   })
 
   function loaderShow(text){
@@ -92,7 +93,7 @@ $(function() {
         url: '/webScraperTool',
         type: 'POST',
         success: function(body){
-          //google charts load 
+          //google charts load
         google.charts.load("current", {packages:["corechart"]});
 
         console.log(body);
@@ -103,10 +104,10 @@ $(function() {
         var studInfo  = body[0];
         var totalCredComplete = body[1];
         var currClasses = body[2]
-          //Exception handling for pathway in case does not exist 
-        var ifPathway = true; 
+          //Exception handling for pathway in case does not exist
+        var ifPathway = true;
         if(body[3] == undefined) {
-          var pathwayArray = []; 
+          var pathwayArray = [];
         }
         if(ifPathway == true) {
           var pathwayArray = body[3];
@@ -147,19 +148,19 @@ $(function() {
           }
         }//minorData
 
-        pathwayArray.forEach(function(val){ //gets total credits completed for your pathway 
+        pathwayArray.forEach(function(val){ //gets total credits completed for your pathway
           var {pathwayCred, pathwayNum, pathwayTitle, pathwayYear} = val;
           totalPathwayCredits += pathwayCred;
           $('#pathwayClassTable').append(`<tr><td>${pathwayNum}</td><td>${pathwayTitle}</td><td>${pathwayYear}</td></tr>`);
         }); //result: totalPathwayCredits = amount of total creds from pathway completed
 
         $('.detail.pathway').append(totalPathwayCredits);
-        //need to find a way to make max 3 
-        concentrationData.forEach(function(val){ //gets total credits completed for your pathway 
+        //need to find a way to make max 3
+        concentrationData.forEach(function(val){ //gets total credits completed for your pathway
           var {completedCredits, totalNeeded, title} = val;
-          
+
           google.charts.setOnLoadCallback(drawDegreeChart);
-          //Must parse completecredits and required because if not it displays out as a percentage of a 
+          //Must parse completecredits and required because if not it displays out as a percentage of a
           //bigger value, making it 1% of the total graph?
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
@@ -183,9 +184,9 @@ $(function() {
           }
         });
 
-        minorData.forEach(function(val){ //gets total credits completed for your pathway 
+        minorData.forEach(function(val){ //gets total credits completed for your pathway
           var {completedCredits, totalNeeded, title} = val;
-          
+
           google.charts.setOnLoadCallback(drawDegreeChart);
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
@@ -235,7 +236,7 @@ $(function() {
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a 
+        //Must parse completecredits and required because if not it displays out as a percentage of a
         //bigger value, making it 1% of the total graph?
         var cc = parseInt(completedCredits);
         var r = parseInt(required);
