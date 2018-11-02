@@ -15,21 +15,16 @@ $(function() {
 
 
 $("#creds input").keypress(function(e){
-  if (event.which == 13) {
-        event.preventDefault();
+  if (e.which == 13) {
+        e.preventDefault();
         $("#creds").submit();
 
     }
 })
   $("#creds").submit(function(e){
     e.preventDefault();
-
-    if($('input[name="email"]').val() == "" || $('input[name="password"]').val() == ""     ){
-     //append message here
-
-    } else{
       logIn();
-    }
+
   })
 
 
