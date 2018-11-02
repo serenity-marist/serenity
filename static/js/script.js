@@ -1,5 +1,3 @@
-
-
 $(function() {
 
   if(isLogged == "True"){
@@ -15,7 +13,16 @@ $(function() {
     $(".log-seg").show();
   });
 
-  $("#submitBtn").click(function(){
+
+$("#creds input").keypress(function(e){
+  if (event.which == 13) {
+        event.preventDefault();
+        $("#creds").submit();
+
+    }
+})
+  $("#creds").submit(function(e){
+    e.preventDefault();
 
     if($('input[name="email"]').val() == "" || $('input[name="password"]').val() == ""     ){
      //append message here
