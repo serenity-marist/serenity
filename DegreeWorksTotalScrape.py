@@ -28,6 +28,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 ##username and password##
+def logout():
+  settings.driver.quit()
+
 def login():
   settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
@@ -116,9 +119,19 @@ def runScrape():
 
       # studentInfoFileJSON = 'SerenityStudentInfo.json'
     studentDict = dict(zip(finalValue, finalInfo))
-    # studentJSON = json.dumps(studentDict)
-      # studentJSON = studentInfoFinalDf.to_json(orient='records')
-    # studentDict = json.dumps(studentDict) Dumps in func and for loops if double quotes wanted
+
+    if 'Advisors' in studentDict:
+      studentDict['Advisor'] = studentDict['Advisors']
+      del studentDict['Advisors']
+
+    if 'Majors' in studentDict:
+      studentDict['Major'] = studentDict['Majors']
+      del studentDict['Majors']
+  
+    if 'Minors' in studentDict:
+      studentDict['Minor'] = studentDict['Minors']
+      del studentDict['Minors']
+
     return studentDict
 
   ################# END STUDENT VIEW SCRAPE #################
@@ -295,6 +308,6 @@ def runScrape():
 ################ CLOSE SESSION ######################
 
 #closes the driver session safely
-  settings.driver.close()
+  #
 
 ################ END SCRAPE PYTHON ######################
