@@ -120,7 +120,11 @@ $(function() {
           required = 0;
         }
 
-        $("#creditsLeft").text(required);
+        if(required == 0) {
+          $("#creditsLeft").text("All done!");
+        } else {
+          $("#creditsLeft").text(required);
+        }
         //exception for if required is negative
 
 
@@ -171,6 +175,11 @@ $(function() {
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
           var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
           function drawDegreeChart() {
             var data = google.visualization.arrayToDataTable([
               ['Class', 'Credits'],
@@ -199,6 +208,11 @@ $(function() {
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
           var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
           function drawDegreeChart() {
             var data = google.visualization.arrayToDataTable([
               ['Class', 'Credits'],
@@ -225,6 +239,11 @@ $(function() {
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
           var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
           function drawDegreeChart() {
             var data = google.visualization.arrayToDataTable([
               ['Class', 'Credits'],
