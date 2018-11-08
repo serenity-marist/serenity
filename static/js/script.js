@@ -115,7 +115,14 @@ $(function() {
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCredits);
         var required = totalNeeded - completedCredits;
+
+        if(required < 0) {
+          required = 0;
+        }
+
         $("#creditsLeft").text(required);
+        //exception for if required is negative
+
 
         console.log(totalCredComplete);
         /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
@@ -156,6 +163,34 @@ $(function() {
         $('.detail.pathway').append(totalPathwayCredits);
         //need to find a way to make max 3 
         concentrationData.forEach(function(val){ //gets total credits completed for your pathway 
+          var {completedCredits, totalNeeded, title} = val;
+          
+          google.charts.setOnLoadCallback(drawDegreeChart);
+          //Must parse completecredits and required because if not it displays out as a percentage of a 
+          //bigger value, making it 1% of the total graph?
+          var cc = parseInt(completedCredits);
+          var t = parseInt(totalNeeded);
+          var r = t - cc;
+          function drawDegreeChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Class', 'Credits'],
+              ['Completed',     cc],
+              ['Required',      r]
+            ]);
+            var options = {
+              pieHole: 0.5,
+              pieSliceTextStyle: {
+                color: 'black',
+              },
+              legend: 'none',
+              title: 'Progress of: ' + title
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
+            chart.draw(data, options);
+          }
+        });
+
+        majorData.forEach(function(val){ //gets total credits completed for your pathway 
           var {completedCredits, totalNeeded, title} = val;
           
           google.charts.setOnLoadCallback(drawDegreeChart);
