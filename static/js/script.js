@@ -113,7 +113,7 @@ $(function() {
         }
         /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
-        $("#completedCredits").text(completedCreditsO);
+        $("#completedCredits").text(completedCredits);
         var requiredTotal = totalNeeded - completedCredits;
 
         if(requiredTotal < 0) {
