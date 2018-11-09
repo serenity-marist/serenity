@@ -112,9 +112,9 @@ $(function() {
           var pathwayArray = body[3];
         }
         /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
-        var {completedCreditsO, titleO, totalNeededO } = totalCredComplete[0];
+        var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCreditsO);
-        var requiredTotal = totalNeededO - completedCreditsO;
+        var requiredTotal = totalNeeded - completedCredits;
 
         if(requiredTotal < 0) {
           requiredTotal = 0;
@@ -131,7 +131,7 @@ $(function() {
         google.charts.setOnLoadCallback(drawDegreeChart);
         //Must parse completecredits and required because if not it displays out as a percentage of a 
         //bigger value, making it 1% of the total graph?
-        var ccOverall = parseInt(completedCreditsO);
+        var ccOverall = parseInt(completedCredits);
         var rOverall = parseInt(requiredTotal);
         function drawDegreeChart() {
           var data = google.visualization.arrayToDataTable([
