@@ -18,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
@@ -69,7 +70,7 @@ def runScrape():
       headTitle.append(head.text)
   #Students info:
   #arrays: major(s), minor(s), degree
-  #strings: pway (since there can only be one)
+  #strings: pathway (since there can only be one)
   degreeName = [x for x in headTitle if 'Degree' in x]
   concentrations = [x for x in headTitle if 'Concentration' in x]
   majorArray = [x for x in headTitle if 'Major' in x]
@@ -127,7 +128,7 @@ def runScrape():
     if 'Majors' in studentDict:
       studentDict['Major'] = studentDict['Majors']
       del studentDict['Majors']
-  
+
     if 'Minors' in studentDict:
       studentDict['Minor'] = studentDict['Minors']
       del studentDict['Minors']
@@ -150,15 +151,15 @@ def runScrape():
     coreReqs = [x for x in reqCourses if '3 credits' in x] #Resulting array
 
     if not coreReqs: #Exception handler
-      return
+      coreDict = {}
+      return coreDict
     else:
       coreRTitle = []
       for x in coreReqs:
           coreRTitle.append("Core Class Required")
       coreDict = dict(zip(coreRTitle, coreReqs))
       # coreDict = json.dumps(coreDict)
-
-    return coreDict
+      return coreDict
     # return coreReqJSON
   ################# END CORE REQ SCRAPE ######################
 
@@ -228,81 +229,98 @@ def runScrape():
   settings.jsonObjects.append(arr)
 
   ################# CURRENT CLASSES SCRAPE ##################
+  # The exception handler in this method is the if statement,
+  # checking if currClassHTML is 0. If it is, it will return an empty JSON.
   def currClassScrape(soup):
     currClassHTML = soup.find_all("table", attrs={"class": "xBlocks"})
 
     if(len(currClassHTML) > 2):
         currClassHTML = currClassHTML[2]
-    else:
+    elif(len(currClassHTML) > 1):
         currClassHTML = currClassHTML[1]
-    #classNames
-    className = currClassHTML.find_all("td", attrs={"class": "SectionCourseTitle"})
-    classNames = []
+    #Exception Handler for no current classes (e.g. transfer student)
+    if(len(currClassHTML) == 0):
+      print("No Current Classes!")
+      currClassJSON = {}
+      return currClassJSON
+    else:
+      #classNames
+      className = currClassHTML.find_all("td", attrs={"class": "SectionCourseTitle"})
+      classNames = []
 
-    for classes in className:
-        classNames.append(classes.text)
-    #classNumbers
-    classNo = currClassHTML.find_all("td", attrs={"class": "ClassesAppliedClasses"})
-    classNos = []
+      for classes in className:
+          classNames.append(classes.text)
+      #classNumbers
+      classNo = currClassHTML.find_all("td", attrs={"class": "ClassesAppliedClasses"})
+      classNos = []
 
-    for no in classNo:
-        no = no.text.replace(u'\xa0', u' ')
-        classNos.append(no)
+      for no in classNo:
+          no = no.text.replace(u'\xa0', u' ')
+          classNos.append(no)
 
-    #creditsEach
-    noCredits = currClassHTML.find_all("td", attrs={"class": "SectionCourseCredits"})
-    curCredits = []
+      #creditsEach
+      noCredits = currClassHTML.find_all("td", attrs={"class": "SectionCourseCredits"})
+      curCredits = []
 
-    for noCreds in noCredits:
-        curCredits.append(noCreds.text)
-    currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
-    currClassDataStack = currClassDataStack.tolist() #Resulting array
+      for noCreds in noCredits:
+          curCredits.append(noCreds.text)
+      currClassDataStack = np.vstack((classNos, classNames, curCredits)).T
+      currClassDataStack = currClassDataStack.tolist() #Resulting array
 
-    currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['currCourseNum', 'currCourseTitle', 'currCreditValue'])
+      currClassInfoDf = pd.DataFrame(currClassDataStack,columns=['currCourseNum', 'currCourseTitle', 'currCreditValue'])
 
-    #JSON of DataFrame is default, CSV commented out
-    # currClassFileCSV = 'SerenityCurrClass.csv'
-    # currClassInfoDf.to_csv(currClassFileCSV, index=False)
-    # currClassFileJSON = 'SerenityCurrClass.json'
-    currClassJSON = currClassInfoDf.to_dict(orient='records')
+      #JSON of DataFrame is default, CSV commented out
+      # currClassFileCSV = 'SerenityCurrClass.csv'
+      # currClassInfoDf.to_csv(currClassFileCSV, index=False)
+      # currClassFileJSON = 'SerenityCurrClass.json'
+      currClassJSON = currClassInfoDf.to_dict(orient='records')
 
-    return currClassJSON
+      return currClassJSON
   ################# END CURR CLASSES SCRAPE ##################
 
   ##Calling the function to get curr class info!!
   currClassFinalJSON = currClassScrape(soup)
   arr = []
-  for x in currClassFinalJSON:
-    # x = json.dumps(x)
-    arr.append(x)
+  if currClassFinalJSON is not None:
+    for x in currClassFinalJSON:
+      arr.append(x)
   settings.jsonObjects.append(arr)
 
   ###################### PATHWAY SCRAPE ######################
+  # Will catch exceptions if Pathway does not exist on the webpage,
+  # and if table is empty it will send an empty JSON dict
   def pathwayScrape(soup):
-    pathwayClassesDri = settings.driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
-    pathwaySoup = BeautifulSoup(pathwayClassesDri.get_attribute('innerHTML'), "html5lib")
+    try:
+      pathwayClassesDri = settings.driver.find_element_by_css_selector('#frmAudit > table:nth-child(28) > tbody > tr > td > table > tbody > tr:nth-child(5) > td.RuleLabelData > table')
+      pathwaySoup = BeautifulSoup(pathwayClassesDri.get_attribute('innerHTML'), "html5lib")
+      pathwayTable = pathwaySoup.find_all('table')[0]
+      pathwayDf = pd.read_html(str(pathwayTable))[0]
 
-    #In this case the exception might be different. Check if functionality for checking empty table
-    pathwayTable = pathwaySoup.find_all('table')[0]
-    pathwayDf = pd.read_html(str(pathwayTable))[0]
+      pathwayDf.columns = ['pathwayNum', 'pathwayTitle', 'pathwayGrade', 'pathwayCred', 'pathwayYear']
 
-    pathwayDf.columns = ['pathwayNum', 'pathwayTitle', 'pathwayGrade', 'pathwayCred', 'pathwayYear']
+      pathwayJSON = pathwayDf.to_dict(orient="records")
 
-    pathwayJSON = pathwayDf.to_dict(orient="records")
+      #JSON of DataFrame is default, CSV commented out
+      # pathwayFileJSON = 'SerenityPathway.json'
+      # pathwayJSON = pathwayDf.to_json(orient='records')
+      return pathwayJSON
+    except NoSuchElementException:
+      # No Pathway available,
+      # so empty JSON is sent.
+      print("No Pathway available")
+      pathwayJSON = {}
+      return pathwayJSON
 
-    #JSON of DataFrame is default, CSV commented out
-    # pathwayFileJSON = 'SerenityPathway.json'
-    # pathwayJSON = pathwayDf.to_json(orient='records')
-    return pathwayJSON
 
   ###################### END PWAY SCRAPE ######################
 
   # Calling the function to get pathway  info!!
   finalPathwayJSON = pathwayScrape(soup)
   arr = []
-  for x in finalPathwayJSON:
+  if not bool(finalPathwayJSON):
+    for x in finalPathwayJSON:
     # x = json.dumps(x)
-    arr.append(x)
+      arr.append(x)
   settings.jsonObjects.append(arr)
 
 ################ CLOSE SESSION ######################
