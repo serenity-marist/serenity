@@ -117,6 +117,8 @@ $(function() {
     $('#pMenu').css('color', "#373737");
     $('#ccMenu').css('color', "#373737");
     $('#siMenu').css('color', "#373737");
+    allHide();
+    $('#majorDiv').show();
   });
 
   $('#pMenu').on('click', function() {

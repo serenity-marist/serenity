@@ -238,7 +238,7 @@ font-size:30px;
 .dash.ui.very.relaxed.list {
   margin: 0 auto;
   width: 50%;
-  padding-top: 5em;
+  padding-top: 8em;
 }
 
 .dash.content.right.content {
@@ -421,4 +421,11 @@ font-size:30px;
 .ui.button.print-btn{
   float: right;
   margin:10px;
+}
+
+#navMenu {
+  font-size: 13pt;
+  width: 100%;
+  padding-top: .8em;
+  font-weight: bold;
 }
