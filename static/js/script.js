@@ -33,7 +33,6 @@ $(function() {
   function loaderShow(text){
     $(".load-p").text(text)
     $(".loader").show();
-
   }
 
   function loaderDelete(){
@@ -82,6 +81,10 @@ $(function() {
   $('#minorBtn').click(function() {
     allHide();
     $('#minorDiv').show();
+  });
+
+  $('#dpMenu').on('click', function() {
+    $(window).scrollTop($('.degreeProgress').offset().top);
   });
   /************* END SINGLE PAGE MARKUP **************/
   /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
