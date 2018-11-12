@@ -85,6 +85,49 @@ $(function() {
 
   $('#dpMenu').on('click', function() {
     $(window).scrollTop($('.degreeProgress').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#siMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+  });
+
+  $('#siMenu').on('click', function() {
+    $(window).scrollTop($('.dash.student.information').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+  });
+
+  $('#ccMenu').on('click', function() {
+    $(window).scrollTop($('.dash.current.classes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+  });
+
+  $('#mmMenu').on('click', function() {
+    $(window).scrollTop($('.dash.three.and.boxes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+  });
+
+  $('#pMenu').on('click', function() {
+    $(window).scrollTop($('.dash.three.and.boxes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+    allHide();
+    $('#pathwayDiv').show();
   });
   /************* END SINGLE PAGE MARKUP **************/
   /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
