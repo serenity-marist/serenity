@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, session
 from flask import request
 from flask import render_template, redirect, url_for, request, jsonify
@@ -47,6 +46,7 @@ def logout():
 
 @app.route("/login", methods=['POST'])
 def login():
+   print(request.form['ciph'])
    settings.email = request.form['email']
    settings.password = request.form['password']
    if settings.email == "" or settings.password == "":

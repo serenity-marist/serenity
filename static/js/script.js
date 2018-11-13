@@ -46,7 +46,14 @@ $("#creds input").keypress(function(e){
   function logIn(){
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
-      var submissionData = $('#creds').serialize();
+        var submissionData =  {
+          "password": $("input[name=password]").val(),
+          "email": $("input[name=email]").val()
+        }
+        var encrypted = CryptoJS.AES.encrypt(submissionData.pass, 'secret key 123');
+        submissionData['ciph'] = encrypted;
+        console.log(submissionData);
+
       $.ajax({
         url: '/login',
         data:submissionData,
