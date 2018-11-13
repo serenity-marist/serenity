@@ -6,6 +6,10 @@ html, body{
   font-family: 'Ubuntu', sans-serif !important;
 }
 
+svg > g > g:last-child {
+  pointer-events: none;
+}
+
 .main-content-wrapper{
   width:100%;
   height:100%;
@@ -218,9 +222,11 @@ font-size:30px;
   background-color: #f0f0f0;
   width: 100%;
   min-height: 960px;
+  min-width: 618px;
   height: 100%;
   z-index: 0;
   position: relative;
+  overflow-y: scroll;
 }
 
 .dash.content.left.menu {
@@ -232,7 +238,7 @@ font-size:30px;
 .dash.ui.very.relaxed.list {
   margin: 0 auto;
   width: 50%;
-  padding-top: 5em;
+  padding-top: 8em;
 }
 
 .dash.content.right.content {
@@ -285,7 +291,7 @@ font-size:30px;
   display:block;
   float:left;
   width: 100%;
-  height: 35%;
+  height: 300px;
 }
 
 #classHeader {
@@ -405,9 +411,6 @@ font-size:30px;
   font-size: 12px !important;
 }
 
-
-
-
 .ui.button.log-out{
   float: right;
   margin:10px;
@@ -418,4 +421,11 @@ font-size:30px;
 .ui.button.print-btn{
   float: right;
   margin:10px;
+}
+
+#navMenu {
+  font-size: 13pt;
+  width: 100%;
+  padding-top: .8em;
+  font-weight: bold;
 }

@@ -59,5 +59,10 @@ def login():
    return jsonify(settings.email)
 
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int("5000"), debug=True)
+=======
+if __name__ == '__main__':
+    app.run(debug=True, port=5000, host='0.0.0.0')
+>>>>>>> 636db1adf1fdf3e00f34128d49e782dd262f6ebc
