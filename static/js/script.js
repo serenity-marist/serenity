@@ -36,7 +36,6 @@ $("#creds input").keypress(function(e){
   function loaderShow(text){
     $(".load-p").text(text)
     $(".loader").show();
-
   }
 
   function loaderDelete(){
@@ -86,6 +85,55 @@ $("#creds input").keypress(function(e){
     allHide();
     $('#minorDiv').show();
   });
+
+  $('#dpMenu').on('click', function() {
+    $(window).scrollTop($('.degreeProgress').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#siMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+  });
+
+  $('#siMenu').on('click', function() {
+    $(window).scrollTop($('.dash.student.information').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+  });
+
+  $('#ccMenu').on('click', function() {
+    $(window).scrollTop($('.dash.current.classes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+  });
+
+  $('#mmMenu').on('click', function() {
+    $(window).scrollTop($('.dash.three.and.boxes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#pMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+    allHide();
+    $('#majorDiv').show();
+  });
+
+  $('#pMenu').on('click', function() {
+    $(window).scrollTop($('.dash.three.and.boxes').offset().top);
+    $(this).css('color', '#ffd800');
+    $('#dpMenu').css('color', "#373737");
+    $('#mmMenu').css('color', "#373737");
+    $('#ccMenu').css('color', "#373737");
+    $('#siMenu').css('color', "#373737");
+    allHide();
+    $('#pathwayDiv').show();
+  });
   /************* END SINGLE PAGE MARKUP **************/
   /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
   function scrapeData(){
@@ -117,8 +165,41 @@ $("#creds input").keypress(function(e){
         /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
         var {completedCredits, title, totalNeeded } = totalCredComplete[0];
         $("#completedCredits").text(completedCredits);
-        var required = totalNeeded - completedCredits;
-        $("#creditsLeft").text(required);
+        var requiredTotal = totalNeeded - completedCredits;
+
+        if(requiredTotal < 0) {
+          requiredTotal = 0;
+        }
+
+        //exception for if required is negative
+        if(requiredTotal == 0) {
+          $("#creditsLeft").text("All done!");
+        } else {
+          $("#creditsLeft").text(requiredTotal);
+        }
+        
+        /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
+        google.charts.setOnLoadCallback(drawDegreeChart);
+        //Must parse completecredits and required because if not it displays out as a percentage of a 
+        //bigger value, making it 1% of the total graph?
+        var ccOverall = parseInt(completedCredits);
+        var rOverall = parseInt(requiredTotal);
+        function drawDegreeChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Class', 'Credits'],
+            ['Completed',     ccOverall],
+            ['Required',      rOverall]
+          ]);
+          var options = {
+            pieHole: 0.5,
+            pieSliceTextStyle: {
+              color: 'black',
+            },
+            legend: 'none'
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+          chart.draw(data, options);
+        } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
 
         console.log(totalCredComplete);
         /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
@@ -167,6 +248,44 @@ $("#creds input").keypress(function(e){
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
           var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
+          function drawDegreeChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Class', 'Credits'],
+              ['Completed',     cc],
+              ['Required',      r]
+            ]);
+            var options = {
+              pieHole: 0.5,
+              pieSliceTextStyle: {
+                color: 'black',
+              },
+              legend: 'none',
+              title: 'Progress of: ' + title
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
+            chart.draw(data, options);
+          }
+        });
+
+        majorData.forEach(function(val){ //gets total credits completed for your pathway 
+          var {completedCredits, totalNeeded, title} = val;
+          
+          google.charts.setOnLoadCallback(drawDegreeChart);
+          //Must parse completecredits and required because if not it displays out as a percentage of a 
+          //bigger value, making it 1% of the total graph?
+          var cc = parseInt(completedCredits);
+          var t = parseInt(totalNeeded);
+          var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
           function drawDegreeChart() {
             var data = google.visualization.arrayToDataTable([
               ['Class', 'Credits'],
@@ -193,6 +312,11 @@ $("#creds input").keypress(function(e){
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
           var r = t - cc;
+
+          if(r < 0) {
+            r = 0;
+          }
+
           function drawDegreeChart() {
             var data = google.visualization.arrayToDataTable([
               ['Class', 'Credits'],
@@ -236,6 +360,7 @@ $("#creds input").keypress(function(e){
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
+          
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.setOnLoadCallback(drawDegreeChart);
         //Must parse completecredits and required because if not it displays out as a percentage of a
@@ -258,6 +383,7 @@ $("#creds input").keypress(function(e){
           var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
           chart.draw(data, options);
         } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+
         }, /********** END OF SUCCESS **********/
         error: function(body){
           $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);

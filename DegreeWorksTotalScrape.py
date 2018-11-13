@@ -18,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException
 
 ################# DRIVER CODE PORTION #################
@@ -33,7 +34,7 @@ def logout():
   settings.driver.quit()
 
 def login():
-  settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+  settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
 
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
   settings.driver.get(url)
@@ -326,6 +327,7 @@ def runScrape():
 ################ CLOSE SESSION ######################
 
 #closes the driver session safely
-  #
+# webdriver.dispose()
+#
 
 ################ END SCRAPE PYTHON ######################

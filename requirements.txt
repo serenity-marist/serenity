@@ -1,0 +1,7 @@
+flask
+pandas
+bs4
+numpy
+selenium
+html5lib
+lxml
