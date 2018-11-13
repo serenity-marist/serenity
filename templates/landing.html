@@ -41,6 +41,8 @@
 
     <!-- START LOG IN PAGE UI -->
     <div class="log-seg">
+
+
       <div class="content-login">
         <div class="header-start"> <h1>Let's get started</h1> </div>
         <h2>First, please provide your Marist login information.</h2>
@@ -52,15 +54,14 @@
           <form id="creds" method ="post">
             <div class="floating-input">
               <label>USERNAME</label>
-              <input type="text" name="email">
+              <input type="text" name="email" required>
             </div>
             <div class="floating-input">
               <label>PASSWORD</label>
-              <input type="password" name="password">
+              <input type="password" name="password" required>
             </div>
-            <div id="submitBtn" class="circle-btn" type ="submit">
-            <p btn-content> > </p>
-            </div>
+            <input id="submitBtn" class="circle-btn" type ="submit" value=">"/>
+            
           </form>
 
 
@@ -235,7 +236,7 @@
               <button class="ui teal button" id="minorBtn">Minor</button>
               <button class="ui red button" id="pathwayBtn">Pathway</button>
             </div>
-      
+
             <div class="dash boxes">
               <div id="pathwayDiv">
                 <div id="classHeader">
@@ -256,7 +257,7 @@
 
               <div id="minorDiv">
               </div>
-              
+
             </div>
           </div>
         </div>
