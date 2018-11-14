@@ -1,6 +1,7 @@
 from flask import Flask, render_template, session
 from flask import request
 from flask import render_template, redirect, url_for, request, jsonify
+import os
 import settings
 import json
 import DegreeWorksTotalScrape
@@ -11,10 +12,8 @@ app.secret_key = 'any random string'
 @app.route('/')
 def home():
   isLogged = False
-  if 'sessionId' in session:
+  if 'email' in session:
     isLogged = True
-    settings.email = session['sessionId']
-    settings.password = session['password']
   return render_template('landing.html', isLogged = isLogged)
 
 @app.route('/dashboard')
@@ -23,20 +22,9 @@ def dashboard():
 
 
 
-# return _test(request.form["test"])
-# @app.route("toolPage", methods = ['POST'])
-#  def toolPage():
-
-
 @app.route('/webScraperTool', methods =['POST'])
 def webScraperTool():
- # settings.email = request.form['email'];
- # settings.password = request.form['password'];
- # import DegreeWorksTotalScrape
- session['sessionId'] = settings.email
- session['password'] = settings.password
  DegreeWorksTotalScrape.runScrape()
-#  print(settings.jsonObjects)
  return jsonify(settings.jsonObjects)
 
 @app.route('/logout' ,methods=['GET'])
@@ -49,15 +37,15 @@ def logout():
 @app.route("/login", methods=['POST'])
 def login():
 
-  # once a user initially logs in, we get it from request FROM
-  # once a user is logged in, we get it from the session
-   settings.email = request.form['email']
-   settings.password = request.form['password']
-   if settings.email == "" or settings.password == "":
-     settings.email =  session['sessionId']
-     settings.password = session['password']
-   # import Login
-   result =  DegreeWorksTotalScrape.login()
+  # When a user initially logs in, we get the user data from request form.
+  # The data then gets saved.
+   session['email'] = request.form['email']
+   session['password']  = request.form['password']
+
+   result =  DegreeWorksTotalScrape.login(session['email'], session['password'])
+   # As soon as we can login with their info, delete the password
+   session.pop('password', None)
+
    return jsonify(result)
 
 

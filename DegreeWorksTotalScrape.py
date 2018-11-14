@@ -32,14 +32,14 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 def logout():
   settings.driver.quit()
 
-def login():
+def login(email, password):
 
   settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
-  #settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+  # settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
   settings.driver.get(url)
-  usernameStr = settings.email
-  passwordStr = settings.password
+  usernameStr = email
+  passwordStr = password
 
   username = settings.driver.find_element_by_id('username')
   username.send_keys(usernameStr)
@@ -49,6 +49,10 @@ def login():
 
   nextButton = settings.driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
   nextButton.click()
+
+
+  usernameStr = None
+  passwordStr = None
   try:
     isCheckable = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
   except:
@@ -56,7 +60,6 @@ def login():
     return False
 ################# END DRIVER CODE PORTION #################
 def runScrape():
-  print(settings.email)
   ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
   contFrame = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
   settings.driver.switch_to.frame(contFrame)
