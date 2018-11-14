@@ -78,6 +78,7 @@ svg > g > g:last-child {
   padding: 15px;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
+  min-width:250px;
 }
 
 .floating-input{
@@ -441,7 +442,7 @@ font-size:30px;
 /* MOBILE DESIGN */
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   #main-logo{
     width:400px
   }
@@ -449,4 +450,27 @@ font-size:30px;
     font-size:20px;
   }
 
+  .circle-btn{
+    left:43%;
+    height:78px;
+    width:78px;
+  }
+  .content-login h2{
+    font-size:20px;
+  }
+
+  .floating-input input{
+    font-size:13px;
+  }
+  #load{
+    width:200px;
+  }
+}
+
+
+
+@media only screen and (min-width: 800px) and (max-width: 1250px) {
+  .circle-btn{
+    left:45%;
+  }
 }
