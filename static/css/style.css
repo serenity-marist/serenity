@@ -424,6 +424,10 @@ font-size:30px;
   margin:10px;
 }
 
+
+.mob-print{
+  display: none;
+}
 #navMenu {
   font-size: 13pt;
   width: 100%;
@@ -465,6 +469,40 @@ font-size:30px;
   #load{
     width:200px;
   }
+  .ui.button.print-btn{
+    display:block;
+    float:left !important;
+
+  }
+
+  .dash.content.left.menu{
+    display: none;
+  }
+
+  .dash.content.right.content{
+    width:100%;
+
+  }
+  svg rect{
+    width:100%;
+  }
+
+}
+/* .dash.content.right.content{
+  width:100%;
+  float: none;
+
+}
+
+  .degreeProgress{
+    width:100%;
+    float:none;
+  }
+
+  .dash.student.information{
+    width:90%;
+    float:none;
+  } */
 }
 
 
