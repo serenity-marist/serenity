@@ -33,6 +33,8 @@ def webScraperTool():
  # settings.email = request.form['email'];
  # settings.password = request.form['password'];
  # import DegreeWorksTotalScrape
+ session['sessionId'] = settings.email
+ session['password'] = settings.password
  DegreeWorksTotalScrape.runScrape()
 #  print(settings.jsonObjects)
  return jsonify(settings.jsonObjects)
@@ -46,13 +48,14 @@ def logout():
 
 @app.route("/login", methods=['POST'])
 def login():
+
+  # once a user initially logs in, we get it from request FROM
+  # once a user is logged in, we get it from the session
    settings.email = request.form['email']
    settings.password = request.form['password']
    if settings.email == "" or settings.password == "":
      settings.email =  session['sessionId']
      settings.password = session['password']
-   session['sessionId'] = settings.email
-   session['password'] = settings.password
    # import Login
    result =  DegreeWorksTotalScrape.login()
    return jsonify(result)

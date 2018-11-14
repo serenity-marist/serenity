@@ -69,7 +69,7 @@ $("#creds input").keypress(function(e){
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          $(".main-content").prepend(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
         },
         complete: function(){
         }
@@ -374,27 +374,27 @@ $("#creds input").keypress(function(e){
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
 
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
-        google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a
-        //bigger value, making it 1% of the total graph?
-        var cc = parseInt(completedCredits);
-        var r = parseInt(required);
-        function drawDegreeChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Class', 'Credits'],
-            ['Completed',     cc],
-            ['Required',      r]
-          ]);
-          var options = {
-            pieHole: 0.5,
-            pieSliceTextStyle: {
-              color: 'black',
-            },
-            legend: 'none'
-          };
-          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-          chart.draw(data, options);
-        } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+        // google.charts.setOnLoadCallback(drawDegreeChart);
+        // //Must parse completecredits and required because if not it displays out as a percentage of a
+        // //bigger value, making it 1% of the total graph?
+        // var cc = parseInt(completedCredits);
+        // var r = parseInt(required);
+        // function drawDegreeChart() {
+        //   var data = google.visualization.arrayToDataTable([
+        //     ['Class', 'Credits'],
+        //     ['Completed',     cc],
+        //     ['Required',      r]
+        //   ]);
+        //   var options = {
+        //     pieHole: 0.5,
+        //     pieSliceTextStyle: {
+        //       color: 'black',
+        //     },
+        //     legend: 'none'
+        //   };
+        //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        //   chart.draw(data, options);
+        /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
 
         }, /********** END OF SUCCESS **********/
         error: function(body){
