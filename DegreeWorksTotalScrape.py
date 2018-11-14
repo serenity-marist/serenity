@@ -33,8 +33,9 @@ def logout():
   settings.driver.quit()
 
 def login():
-  settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
 
+  #settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
+  settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
   settings.driver.get(url)
   usernameStr = settings.email
@@ -48,7 +49,11 @@ def login():
 
   nextButton = settings.driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
   nextButton.click()
-  isCheckable = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
+  try:
+    isCheckable = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
+  except:
+    settings.driver.quit()
+    return False
 ################# END DRIVER CODE PORTION #################
 def runScrape():
   print(settings.email)
@@ -128,7 +133,7 @@ def runScrape():
     if 'Majors' in studentDict:
       studentDict['Major'] = studentDict['Majors']
       del studentDict['Majors']
-  
+
     if 'Minors' in studentDict:
       studentDict['Minor'] = studentDict['Minors']
       del studentDict['Minors']

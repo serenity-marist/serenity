@@ -43,28 +43,33 @@ $("#creds input").keypress(function(e){
   }
 
   function logIn(){
+    $(".msg-sect").empty();
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
         var submissionData =  {
           "password": $("input[name=password]").val(),
           "email": $("input[name=email]").val()
         }
-        var encrypted = CryptoJS.AES.encrypt(submissionData.pass, 'secret key 123');
-        submissionData['ciph'] = encrypted;
-        console.log(submissionData);
 
       $.ajax({
         url: '/login',
         data:submissionData,
         type: 'POST',
         success: function(body){
-          loaderDelete();
+          if(body !== false){
+            loaderDelete();
             scrapeData();
+          }
+          else {
+            loaderDelete();
+            $(".log-seg").show();
+            $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          }
         },
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".main-content").prepend(`<h1> ERROR: Username or Password was incoorect. Please try again..</h1>`);
+          $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
         },
         complete: function(){
         }
@@ -184,10 +189,10 @@ $("#creds input").keypress(function(e){
         } else {
           $("#creditsLeft").text(requiredTotal);
         }
-        
+
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a 
+        //Must parse completecredits and required because if not it displays out as a percentage of a
         //bigger value, making it 1% of the total graph?
         var ccOverall = parseInt(completedCredits);
         var rOverall = parseInt(requiredTotal);
@@ -279,11 +284,11 @@ $("#creds input").keypress(function(e){
           }
         });
 
-        majorData.forEach(function(val){ //gets total credits completed for your pathway 
+        majorData.forEach(function(val){ //gets total credits completed for your pathway
           var {completedCredits, totalNeeded, title} = val;
-          
+
           google.charts.setOnLoadCallback(drawDegreeChart);
-          //Must parse completecredits and required because if not it displays out as a percentage of a 
+          //Must parse completecredits and required because if not it displays out as a percentage of a
           //bigger value, making it 1% of the total graph?
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
@@ -367,7 +372,7 @@ $("#creds input").keypress(function(e){
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
-          
+
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.setOnLoadCallback(drawDegreeChart);
         //Must parse completecredits and required because if not it displays out as a percentage of a

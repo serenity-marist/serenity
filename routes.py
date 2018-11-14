@@ -46,7 +46,6 @@ def logout():
 
 @app.route("/login", methods=['POST'])
 def login():
-   print(request.form['ciph'])
    settings.email = request.form['email']
    settings.password = request.form['password']
    if settings.email == "" or settings.password == "":
@@ -55,8 +54,8 @@ def login():
    session['sessionId'] = settings.email
    session['password'] = settings.password
    # import Login
-   DegreeWorksTotalScrape.login()
-   return jsonify(settings.email)
+   result =  DegreeWorksTotalScrape.login()
+   return jsonify(result)
 
 
 if __name__ == '__main__':
