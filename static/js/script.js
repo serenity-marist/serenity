@@ -1,12 +1,12 @@
 $(function() {
 
-  if(isLogged == "True"){
-    $(".main-inside").hide();
-    logIn();
-  //  scrapeData();
-
-
-  }
+  // if(isLogged == "True"){
+  //   $(".main-inside").hide();
+  //   logIn();
+  // //  scrapeData();
+  //
+  //
+  // }
   /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
