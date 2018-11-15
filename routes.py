@@ -12,9 +12,8 @@ app.secret_key = 'any random string'
 @app.route('/')
 def home():
   isLogged = False
-  print(session)
-  if 'email' in session:
-    isLogged = True
+  # if 'email' in session:
+  #   isLogged = True
   return render_template('landing.html', isLogged = isLogged)
 
 @app.route('/dashboard')
@@ -30,22 +29,22 @@ def webScraperTool():
 
 @app.route('/logout' ,methods=['GET'])
 def logout():
-  session.pop('email', None)
+  # session.pop('email', None)
   DegreeWorksTotalScrape.logout()
   return redirect("/")
 
 
 @app.route("/login", methods=['POST'])
 def login():
-
+   print(email)
   # When a user initially logs in, we get the user data from request form.
   # The data then gets saved.
-   session['email'] = request.form['email']
-   session['password']  = request.form['password']
+   email = request.form['email']
+   password = request.form['password']
 
-   result =  DegreeWorksTotalScrape.login(session['email'], session['password'])
+   result =  DegreeWorksTotalScrape.login(email, password)
    # As soon as we can login with their info, delete the password
-   session.pop('password', None)
+   # session.pop('password', None)
 
    return jsonify(result)
 
