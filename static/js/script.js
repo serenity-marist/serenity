@@ -1,12 +1,5 @@
 $(function() {
-
-  // if(isLogged == "True"){
-  //   $(".main-inside").hide();
-  //   logIn();
-  // //  scrapeData();
-  //
-  //
-  // }
+//test
   /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
