@@ -12,6 +12,7 @@ app.secret_key = 'any random string'
 @app.route('/')
 def home():
   isLogged = False
+  print(session)
   if 'email' in session:
     isLogged = True
   return render_template('landing.html', isLogged = isLogged)
@@ -29,7 +30,7 @@ def webScraperTool():
 
 @app.route('/logout' ,methods=['GET'])
 def logout():
-  session.pop('sessionId', None)
+  session.pop('email', None)
   DegreeWorksTotalScrape.logout()
   return redirect("/")
 
