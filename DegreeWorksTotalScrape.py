@@ -35,7 +35,7 @@ def logout():
 def login(email, password):
 
   settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
-  #settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+  # settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
   settings.driver.get(url)
   usernameStr = email
