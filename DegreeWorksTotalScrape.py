@@ -309,7 +309,6 @@ def runScrape():
 ################ CLOSE SESSION ######################
 
 #closes the driver session safely
-# webdriver.dispose()
 #
 
 ################ END SCRAPE PYTHON ######################

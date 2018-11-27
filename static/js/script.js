@@ -383,7 +383,7 @@ $("#creds input").keypress(function(e){
         //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         //   chart.draw(data, options);
         /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
-
+        
         }, /********** END OF SUCCESS **********/
         error: function(body){
           $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);
