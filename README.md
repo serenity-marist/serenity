@@ -1,27 +1,23 @@
 ## Serenity
-Serenity is a Marist Capping project which provides a readable and intuitive platform
+Serenity is a Marist Capping project which provides a readable and intuitive dashboard
+as an alternative for viewing your degree completion progress.
 
-## Build status
 
 
 ## Screenshots
-Include logo/demo screenshot etc.
+![Alt text](relative/path/to/serenityLogoScreenshot.png?raw=true "Serenity Logo")
 
 ## Tech/framework used
-Ex. -
-
 <b>Built with</b>
 - [Flask](http://flask.pocoo.org)
+- [Selenium](https://selenium-python.readthedocs.io)
 
 ## Features
+Using your credentials
+
 
 
 ## Code Example
-
-## Installation
-
-
-## API Reference
 
 
 

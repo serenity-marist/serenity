@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -17,6 +19,13 @@
   <script src="/static/js/printThis.js"> </script>
 
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha256.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+
+
+
 </head>
 <body>
 
@@ -30,9 +39,12 @@
   </div>
   <!-- END HEADER PORTION -->
   <!-- YELLOW PORTION -->
+  <div class="msg-sect">
+  </div>
   <div class="main-content">
     <div class="main-inside welcome-seg">
-      <img src="/static/img/serenityLogo.png" width="600px "/>
+
+      <img src="/static/img/serenityLogo.png" id="main-logo" width="600px "/>
       <p class="land-p"> <span style="color:white">A</span> comprehensible<span style="color:white">,</span> <br/>
       interactive<span style="color:white">,</span> <br/> <span style="color:white">DegreeWorks</span> alternative </p>
 
@@ -61,7 +73,7 @@
               <input type="password" name="password" required>
             </div>
             <input id="submitBtn" class="circle-btn" type ="submit" value=">"/>
-            
+
           </form>
 
 
@@ -96,7 +108,7 @@
     <!-- START LOADER  -->
     <div class="loader">
       <div class="img-wrapper animated bounce infinite">
-        <img src="/static/img/loadingIcon.png" width="400px "/>
+        <img src="/static/img/loadingIcon.png" id="load" width="400px "/>
       </div>
         <p class="load-p"> <span style="color:white">Loading dashboard...</span> </p>
     </div>
@@ -113,6 +125,7 @@
     <div class="dash content">
       <div class="dash head">
         <a href="/logout">
+
           <button class="ui button log-out">Log Out</button>
         </a>
         <div class="dash head content">
@@ -271,8 +284,7 @@
 
 
 <script>
-var isLogged = `{{isLogged}}`;
-
+// var isLogged = `{{isLogged}}`;
 </script>
 </body>
 </html>

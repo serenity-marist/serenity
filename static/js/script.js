@@ -1,12 +1,5 @@
 $(function() {
-
-  if(isLogged == "True"){
-    $(".main-inside").hide();
-    logIn();
-  //  scrapeData();
-
-
-  }
+//test
   /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
@@ -43,21 +36,33 @@ $("#creds input").keypress(function(e){
   }
 
   function logIn(){
+    $(".msg-sect").empty();
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
-      var submissionData = $('#creds').serialize();
+        var submissionData =  {
+          "password": $("input[name=password]").val(),
+          "email": $("input[name=email]").val()
+        }
+
       $.ajax({
         url: '/login',
         data:submissionData,
         type: 'POST',
         success: function(body){
-          loaderDelete();
+          if(body !== false){
+            loaderDelete();
             scrapeData();
+          }
+          else {
+            loaderDelete();
+            $(".log-seg").show();
+            $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          }
         },
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".main-content").prepend(`<h1> ERROR: Username or Password was incoorect. Please try again..</h1>`);
+          $(".main-content").prepend(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
         },
         complete: function(){
         }
@@ -177,10 +182,10 @@ $("#creds input").keypress(function(e){
         } else {
           $("#creditsLeft").text(requiredTotal);
         }
-        
+
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
         google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a 
+        //Must parse completecredits and required because if not it displays out as a percentage of a
         //bigger value, making it 1% of the total graph?
         var ccOverall = parseInt(completedCredits);
         var rOverall = parseInt(requiredTotal);
@@ -272,11 +277,11 @@ $("#creds input").keypress(function(e){
           }
         });
 
-        majorData.forEach(function(val){ //gets total credits completed for your pathway 
+        majorData.forEach(function(val){ //gets total credits completed for your pathway
           var {completedCredits, totalNeeded, title} = val;
-          
+
           google.charts.setOnLoadCallback(drawDegreeChart);
-          //Must parse completecredits and required because if not it displays out as a percentage of a 
+          //Must parse completecredits and required because if not it displays out as a percentage of a
           //bigger value, making it 1% of the total graph?
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
@@ -346,6 +351,50 @@ $("#creds input").keypress(function(e){
         /************* END FOR CURRENT CLASSES **************/
         /************* POPULATE STUDENT VIEW TABLE AJAX **************/
         var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
+
+        // Before population of student data, we have a function for editing advisors names.
+
+        // This function will take the original string of adviors full names and return
+        // them in a readable format by simply listing their last names.
+
+        //This function is first going to iterate through the string of advisors,
+        //and extract their last names (which have a comma)
+        //as its the only to destinguish within the string the different advisors.
+        //It then formats the names in a readable manner, and returns a single string,
+        //of advisors as "Professor X & Professor Y" as opposed to
+        //"LastName, FirstName MiddleInitial LastName, FirstName MiddleInitial"
+        function getSeparateNames(advisorsNames){
+          var myAdvisors = advisorsNames;
+
+          //Regex matches the name with the comma after it (the last name)
+          var regex1 = /[a-zA-Z-]+\,/g;
+
+          var match;
+          var lastNames = [];
+
+          while( (match = regex1.exec(myAdvisors)) != null){
+          	lastNames.push(match[0]);
+          }
+
+          //Iterate through lastNames and take out the comma
+          for(var i = 0; i < lastNames.length; i++){
+            var commaIndex = lastNames[i].indexOf(',');
+            lastNames[i] = lastNames[i].slice(0, commaIndex);
+          }
+
+          var editedNames = '';
+
+          for(var i = 0; i < lastNames.length; i++){
+            editedNames = editedNames + 'Professor ' + lastNames[i];
+
+            if(i != lastNames.length-1){
+              editedNames = editedNames + ' & '
+            }
+          }
+          return editedNames;
+        }
+
+        //Populate student data
         $("#studentName").text(Student);
 
         var nameArray = Student.split(",");
@@ -355,34 +404,34 @@ $("#creds input").keypress(function(e){
         $("#id").text(ID);
         $("#year").text(Classification);
         $("#majors").text(Major);
-        $("#advisor").text(Advisor);
+        $("#advisor").text(getSeparateNames(Advisor));
         $("#minors").text(Minor);
         $("#concentration").text(Concentration);
         $("#gpa").text(studInfo["Overall GPA"]);
         /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
-          
+
         /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
-        google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a
-        //bigger value, making it 1% of the total graph?
-        var cc = parseInt(completedCredits);
-        var r = parseInt(required);
-        function drawDegreeChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Class', 'Credits'],
-            ['Completed',     cc],
-            ['Required',      r]
-          ]);
-          var options = {
-            pieHole: 0.5,
-            pieSliceTextStyle: {
-              color: 'black',
-            },
-            legend: 'none'
-          };
-          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-          chart.draw(data, options);
-        } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+        // google.charts.setOnLoadCallback(drawDegreeChart);
+        // //Must parse completecredits and required because if not it displays out as a percentage of a
+        // //bigger value, making it 1% of the total graph?
+        // var cc = parseInt(completedCredits);
+        // var r = parseInt(required);
+        // function drawDegreeChart() {
+        //   var data = google.visualization.arrayToDataTable([
+        //     ['Class', 'Credits'],
+        //     ['Completed',     cc],
+        //     ['Required',      r]
+        //   ]);
+        //   var options = {
+        //     pieHole: 0.5,
+        //     pieSliceTextStyle: {
+        //       color: 'black',
+        //     },
+        //     legend: 'none'
+        //   };
+        //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        //   chart.draw(data, options);
+        /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
 
         }, /********** END OF SUCCESS **********/
         error: function(body){

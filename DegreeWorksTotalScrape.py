@@ -32,13 +32,14 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 def logout():
   settings.driver.quit()
 
-def login():
-  settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
+def login(email, password):
 
+  settings.driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
+  # settings.driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
   settings.driver.get(url)
-  usernameStr = settings.email
-  passwordStr = settings.password
+  usernameStr = email
+  passwordStr = password
 
   username = settings.driver.find_element_by_id('username')
   username.send_keys(usernameStr)
@@ -48,10 +49,17 @@ def login():
 
   nextButton = settings.driver.find_element_by_css_selector('#welcome > div > div.row.btn-row > input.btn-submit')
   nextButton.click()
-  isCheckable = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
+
+
+  usernameStr = None
+  passwordStr = None
+  try:
+    isCheckable = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
+  except:
+    settings.driver.quit()
+    return False
 ################# END DRIVER CODE PORTION #################
 def runScrape():
-  print(settings.email)
   ################# BS PORTION TO RETRIEVE HTML FOR BODY #################
   contFrame = settings.driver.find_element_by_css_selector('html > frameset > frame:nth-child(4)')
   settings.driver.switch_to.frame(contFrame)
@@ -128,7 +136,7 @@ def runScrape():
     if 'Majors' in studentDict:
       studentDict['Major'] = studentDict['Majors']
       del studentDict['Majors']
-  
+
     if 'Minors' in studentDict:
       studentDict['Minor'] = studentDict['Minors']
       del studentDict['Minors']
@@ -206,6 +214,26 @@ def runScrape():
       else:
         completedCredits.append(credits[i])
         i += 1
+    # Exception Handle:
+    # Before the stack of creditsProgress is created, the dimensions of
+    # creditTitles, totalCredits, and completedCredits
+    # need to be the same. And so data must be added if size of one is less than the other.
+
+    #Get the minimum size that all lists need to be by getting the size of the largest list
+    minSize = 0
+    if minSize < len(creditTitles) : minSize = len(creditTitles)
+    if minSize < len(completedCredits) : minSize = len(completedCredits)
+    if minSize < len(totalCredits): minSize = len(totalCredits)
+
+    #Add dummy data if the list needs to be larger.
+    while (len(creditTitles) < minSize):
+      creditTitles.append('None')
+
+    while (len(completedCredits) < minSize):
+      completedCredits.append('None')
+
+    while (len(totalCredits) < minSize):
+      totalCredits.append('None')
 
     #Resulting array is totalCredits and completedCredits, block should be here
     creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
