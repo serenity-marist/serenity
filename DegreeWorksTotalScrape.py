@@ -27,17 +27,9 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
     #Url to DWORKS
 
-driver = None
+# driver =  webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
 
-def createDriver():
-  driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
-  url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
-  driver.get(url)
-  return driver
-
-def getDriver():
-  return driver
 
 ##username and password##
 def logout():
@@ -45,9 +37,15 @@ def logout():
 
 
 def login(email, password):
-  driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+  # try:
+  # except:
   url = "https://degreeworks.banner.marist.edu/dashboard/dashboard"
-  driver.get(url)
+  try:
+    driver.get(url)
+  except:
+    driver =  webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+    driver.get(url)
+
   #driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
 
   usernameStr = email
@@ -68,7 +66,7 @@ def login(email, password):
 
   try:
     data = runScrape(driver)
-    settings.driver = driver
+    session['sessionId']= driver.session_id
     return data
   except:
     driver.quit()
@@ -328,6 +326,7 @@ def runScrape(driver):
     # x = json.dumps(x)
     arr.append(x)
   jsonObjects.append(arr)
+  settings.driver = driver
   return jsonObjects
 
 

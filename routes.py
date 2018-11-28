@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'any random string'
 @app.route('/')
 def home():
+  # DegreeWorksTotalScrape.init()
   # isLogged = False
   # if 'email' in session:
   isLogged = True
