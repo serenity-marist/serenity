@@ -1,3 +1,4 @@
 *.pyc
 py3env
+.DS_Store
 DegreeWorksScrape.ipynb
