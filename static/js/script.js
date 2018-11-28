@@ -1,5 +1,11 @@
 $(function() {
-//test
+  if(isLogged == "True"){
+    $(".main-inside").hide();
+    logIn();
+  //  scrapeData();
+
+
+  }
   /************* SINGLE PAGE APPLICATION MARKUP **************/
   $(".cont-btn").click(function(){
     $(".main-inside").hide();
