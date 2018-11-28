@@ -39,6 +39,11 @@ def logout():
   return redirect("/")
 
 
+@app.route('/destroy', methods=['GET'])
+def destroy():
+  DegreeWorksTotalScrape.destroy()
+  return jsonify("ok")
+
 @app.route("/login", methods=['POST'])
 def login():
 
