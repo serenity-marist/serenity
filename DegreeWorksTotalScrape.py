@@ -51,8 +51,8 @@ def login(email, password):
   try:
     driver.get(url)
   except:
-    # driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
-    driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
+    driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+    # driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
     driver.get(url)
 
   #
@@ -237,6 +237,26 @@ def runScrape(driver):
       else:
         completedCredits.append(credits[i])
         i += 1
+    # Exception Handle:
+    # Before the stack of creditsProgress is created, the dimensions of
+    # creditTitles, totalCredits, and completedCredits
+    # need to be the same. And so data must be added if size of one is less than the other.
+
+    #Get the minimum size that all lists need to be by getting the size of the largest list
+    minSize = 0
+    if minSize < len(creditTitles) : minSize = len(creditTitles)
+    if minSize < len(completedCredits) : minSize = len(completedCredits)
+    if minSize < len(totalCredits): minSize = len(totalCredits)
+
+    #Add dummy data if the list needs to be larger.
+    while (len(creditTitles) < minSize):
+      creditTitles.append('None')
+
+    while (len(completedCredits) < minSize):
+      completedCredits.append('None')
+
+    while (len(totalCredits) < minSize):
+      totalCredits.append('None')
 
     #Resulting array is totalCredits and completedCredits, block should be here
     creditsProgress = np.vstack((creditTitles, completedCredits, totalCredits)).T
