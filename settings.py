@@ -1,6 +1,4 @@
 import os
-
-global driver
-global jsonObjects
 global dirPath
+global driver
 dirpath = os.getcwd()

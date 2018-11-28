@@ -24,8 +24,8 @@ def dashboard():
 
 @app.route('/webScraperTool', methods =['POST'])
 def webScraperTool():
- DegreeWorksTotalScrape.runScrape()
- return jsonify(settings.jsonObjects)
+ jsonObjects = DegreeWorksTotalScrape.runScrape()
+ return jsonify(jsonObjects)
 
 @app.route('/logout' ,methods=['GET'])
 def logout():
