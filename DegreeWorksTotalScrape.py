@@ -2,7 +2,6 @@
 # The application will need:
 ## Selenium webdriver/chromedriver since this is being tested in chrome
 ## Pandas, numpy, etc.
-
 import pandas as pd
 import os
 import re
@@ -12,7 +11,6 @@ import sys
 import settings
 import json
 from flask import session
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -29,9 +27,6 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 # driver =  webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
-
-def destroy():
-  settings.driver.quit()
 
 
 ##username and password##
@@ -357,6 +352,7 @@ def runScrape(driver):
     arr.append(x)
   jsonObjects.append(arr)
   settings.driver = driver
+  driver.quit()
   return jsonObjects
 
 
