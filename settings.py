@@ -1,10 +1,4 @@
 import os
-
-global email
-email = ""
-global password
-password = ""
-global driver
-global jsonObjects
 global dirPath
+global driver
 dirpath = os.getcwd()

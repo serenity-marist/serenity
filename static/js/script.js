@@ -1,5 +1,4 @@
 $(function() {
-
   if(isLogged == "True"){
     $(".main-inside").hide();
     logIn();
@@ -43,16 +42,309 @@ $("#creds input").keypress(function(e){
   }
 
   function logIn(){
+    $(".msg-sect").empty();
     $(".log-seg").hide();
       loaderShow("Validating credentials...");
-      var submissionData = $('#creds').serialize();
+        var submissionData =  {
+          "password": $("input[name=password]").val(),
+          "email": $("input[name=email]").val()
+        }
+
       $.ajax({
         url: '/login',
         data:submissionData,
         type: 'POST',
         success: function(body){
-          loaderDelete();
-            scrapeData();
+          console.log(body);
+          if(body == false){
+            loaderDelete();
+            $(".log-seg").show();
+            $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          }
+          else if(body.length !== 0){
+            loaderDelete();
+            google.charts.load("current", {packages:["corechart"]});
+            $(".main-content-wrapper").hide();
+            $(".dashboard").show();
+            //  $(".main-content").empty();
+
+            var studInfo  = body[0];
+            var totalCredComplete = body[1];
+            var currClasses = body[2]
+              //Exception handling for pathway in case does not exist
+            var ifPathway = true;
+            if(body[3] == undefined) {
+              var pathwayArray = [];
+            }
+            if(ifPathway == true) {
+              var pathwayArray = body[3];
+            }
+            /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
+            var {completedCredits, title, totalNeeded } = totalCredComplete[0];
+            $("#completedCredits").text(completedCredits);
+            var requiredTotal = totalNeeded - completedCredits;
+
+            if(requiredTotal < 0) {
+              requiredTotal = 0;
+            }
+
+            //exception for if required is negative
+            if(requiredTotal == 0) {
+              $("#creditsLeft").text("All done!");
+            } else {
+              $("#creditsLeft").text(requiredTotal);
+            }
+
+            /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
+            google.charts.setOnLoadCallback(drawDegreeChart);
+            //Must parse completecredits and required because if not it displays out as a percentage of a
+            //bigger value, making it 1% of the total graph?
+            var ccOverall = parseInt(completedCredits);
+            var rOverall = parseInt(requiredTotal);
+            function drawDegreeChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Class', 'Credits'],
+                ['Completed',     ccOverall],
+                ['Required',      rOverall]
+              ]);
+              var options = {
+                pieHole: 0.5,
+                pieSliceTextStyle: {
+                  color: 'black',
+                },
+                legend: 'none'
+              };
+              var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+              chart.draw(data, options);
+            } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+
+            console.log(totalCredComplete);
+            /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
+
+            /************* DATA FOR BOTTOM BUTTON PARSING **************/
+            var concentrationData = [];
+            var majorData = [];
+            var minorData = [];
+            var totalPathwayCredits = 0;
+
+            for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are concentration
+              if(totalCredComplete[i].title.split('Concentration ')[1]) {
+                concentrationData.push(totalCredComplete[i]);
+                console.log(concentrationData);
+              }
+            }//concentrationData
+
+            for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are majors
+              if(totalCredComplete[i].title.split('Major ')[1]) {
+                majorData.push(totalCredComplete[i]);
+                console.log(majorData);
+              }
+            }//majorData
+
+            for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are minors
+              if(totalCredComplete[i].title.split('Minor ')[1]) {
+                minorData.push(totalCredComplete[i]);
+                console.log(minorData);
+              }
+            }//minorData
+
+            pathwayArray.forEach(function(val){ //gets total credits completed for your pathway
+              var {pathwayCred, pathwayNum, pathwayTitle, pathwayYear} = val;
+              totalPathwayCredits += pathwayCred;
+              $('#pathwayClassTable').append(`<tr><td>${pathwayNum}</td><td>${pathwayTitle}</td><td>${pathwayYear}</td></tr>`);
+            }); //result: totalPathwayCredits = amount of total creds from pathway completed
+
+            $('.detail.pathway').append(totalPathwayCredits);
+            //need to find a way to make max 3
+            concentrationData.forEach(function(val){ //gets total credits completed for your pathway
+              var {completedCredits, totalNeeded, title} = val;
+
+              google.charts.setOnLoadCallback(drawDegreeChart);
+              //Must parse completecredits and required because if not it displays out as a percentage of a
+              //bigger value, making it 1% of the total graph?
+              var cc = parseInt(completedCredits);
+              var t = parseInt(totalNeeded);
+              var r = t - cc;
+
+              if(r < 0) {
+                r = 0;
+              }
+
+              function drawDegreeChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Class', 'Credits'],
+                  ['Completed',     cc],
+                  ['Required',      r]
+                ]);
+                var options = {
+                  pieHole: 0.5,
+                  pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                  legend: 'none',
+                  title: 'Progress of: ' + title
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
+                chart.draw(data, options);
+              }
+            });
+
+            majorData.forEach(function(val){ //gets total credits completed for your pathway
+              var {completedCredits, totalNeeded, title} = val;
+
+              google.charts.setOnLoadCallback(drawDegreeChart);
+              //Must parse completecredits and required because if not it displays out as a percentage of a
+              //bigger value, making it 1% of the total graph?
+              var cc = parseInt(completedCredits);
+              var t = parseInt(totalNeeded);
+              var r = t - cc;
+
+              if(r < 0) {
+                r = 0;
+              }
+
+              function drawDegreeChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Class', 'Credits'],
+                  ['Completed',     cc],
+                  ['Required',      r]
+                ]);
+                var options = {
+                  pieHole: 0.5,
+                  pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                  legend: 'none',
+                  title: 'Progress of: ' + title
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
+                chart.draw(data, options);
+              }
+            });
+
+            minorData.forEach(function(val){ //gets total credits completed for your pathway
+              var {completedCredits, totalNeeded, title} = val;
+
+              google.charts.setOnLoadCallback(drawDegreeChart);
+              var cc = parseInt(completedCredits);
+              var t = parseInt(totalNeeded);
+              var r = t - cc;
+
+              if(r < 0) {
+                r = 0;
+              }
+
+              function drawDegreeChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Class', 'Credits'],
+                  ['Completed',     cc],
+                  ['Required',      r]
+                ]);
+                var options = {
+                  pieHole: 0.5,
+                  pieSliceTextStyle: {
+                    color: 'black',
+                  },
+                  legend: 'none',
+                  title: 'Progress of: ' + title
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('minorDiv'));
+                chart.draw(data, options);
+              }
+            });
+            /************* END DATA FOR BOTTOM BUTTON PARSING **************/
+            /************* POPULATE AND NUMERATE TOTAL CURRENT CLASSES **************/
+            currClasses.forEach(function(val){
+              var {currCourseNum, currCourseTitle, currCreditValue} = val
+              $('#currClassTable').append(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
+            });
+
+            $('.detail.classes').append(currClasses.length);
+            /************* END FOR CURRENT CLASSES **************/
+            /************* POPULATE STUDENT VIEW TABLE AJAX **************/
+            var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
+
+            // Before population of student data, we have a function for editing advisors names.
+
+            // This function will take the original string of adviors full names and return
+            // them in a readable format by simply listing their last names.
+
+            //This function is first going to iterate through the string of advisors,
+            //and extract their last names (which have a comma)
+            //as its the only to destinguish within the string the different advisors.
+            //It then formats the names in a readable manner, and returns a single string,
+            //of advisors as "Professor X & Professor Y" as opposed to
+            //"LastName, FirstName MiddleInitial LastName, FirstName MiddleInitial"
+            function getSeparateNames(advisorsNames){
+              var myAdvisors = advisorsNames;
+
+              //Regex matches the name with the comma after it (the last name)
+              var regex1 = /[a-zA-Z-]+\,/g;
+
+              var match;
+              var lastNames = [];
+
+              while( (match = regex1.exec(myAdvisors)) != null){
+              	lastNames.push(match[0]);
+              }
+
+              //Iterate through lastNames and take out the comma
+              for(var i = 0; i < lastNames.length; i++){
+                var commaIndex = lastNames[i].indexOf(',');
+                lastNames[i] = lastNames[i].slice(0, commaIndex);
+              }
+
+              var editedNames = '';
+
+              for(var i = 0; i < lastNames.length; i++){
+                editedNames = editedNames + 'Professor ' + lastNames[i];
+
+                if(i != lastNames.length-1){
+                  editedNames = editedNames + ' & '
+                }
+              }
+              return editedNames;
+            }
+            $("#studentName").text(Student);
+
+            var nameArray = Student.split(",");
+            $("#fname").text(nameArray[nameArray.length-1].trim());
+
+
+            $("#id").text(ID);
+            $("#year").text(Classification);
+            $("#majors").text(Major);
+            $("#advisor").text(getSeparateNames(Advisor));
+            $("#minors").text(Minor);
+            $("#concentration").text(Concentration);
+            $("#gpa").text(studInfo["Overall GPA"]);
+            /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
+
+            /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
+            // google.charts.setOnLoadCallback(drawDegreeChart);
+            // //Must parse completecredits and required because if not it displays out as a percentage of a
+            // //bigger value, making it 1% of the total graph?
+            // var cc = parseInt(completedCredits);
+            // var r = parseInt(required);
+            // function drawDegreeChart() {
+            //   var data = google.visualization.arrayToDataTable([
+            //     ['Class', 'Credits'],
+            //     ['Completed',     cc],
+            //     ['Required',      r]
+            //   ]);
+            //   var options = {
+            //     pieHole: 0.5,
+            //     pieSliceTextStyle: {
+            //       color: 'black',
+            //     },
+            //     legend: 'none'
+            //   };
+            //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            //   chart.draw(data, options);
+            /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
+            //scrapeData();
+          }
+
         },
         error: function(body){
           loaderDelete();
@@ -135,179 +427,8 @@ $("#creds input").keypress(function(e){
     $('#pathwayDiv').show();
   });
   /************* END SINGLE PAGE MARKUP **************/
-  /************* FUNCTION TO PARSE DATA FROM PYTHON SCRAPE INTO HTML ~VISUALS~ **************/
-  function scrapeData(){
-    $(".log-seg").hide();
-    loaderShow("Loading dashboard...");
-      $.ajax({
-        url: '/webScraperTool',
-        type: 'POST',
-        success: function(body){
-          //google charts load
-        google.charts.load("current", {packages:["corechart"]});
 
-        console.log(body);
-        $(".main-content-wrapper").hide();
-        $(".dashboard").show();
-        //  $(".main-content").empty();
-
-        var studInfo  = body[0];
-        var totalCredComplete = body[1];
-        var currClasses = body[2]
-          //Exception handling for pathway in case does not exist
-        var ifPathway = true;
-        if(body[3] == undefined) {
-          var pathwayArray = [];
-        }
-        if(ifPathway == true) {
-          var pathwayArray = body[3];
-        }
-        /************* POPULATE DEGREE PROGRESS DESCRIPTION **************/
-        var {completedCredits, title, totalNeeded } = totalCredComplete[0];
-        $("#completedCredits").text(completedCredits);
-        var requiredTotal = totalNeeded - completedCredits;
-
-        if(requiredTotal < 0) {
-          requiredTotal = 0;
-        }
-
-        //exception for if required is negative
-        if(requiredTotal == 0) {
-          $("#creditsLeft").text("All done!");
-        } else {
-          $("#creditsLeft").text(requiredTotal);
-        }
-        
-        /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
-        google.charts.setOnLoadCallback(drawDegreeChart);
-        //Must parse completecredits and required because if not it displays out as a percentage of a 
-        //bigger value, making it 1% of the total graph?
-        var ccOverall = parseInt(completedCredits);
-        var rOverall = parseInt(requiredTotal);
-        function drawDegreeChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['Class', 'Credits'],
-            ['Completed',     ccOverall],
-            ['Required',      rOverall]
-          ]);
-          var options = {
-            pieHole: 0.5,
-            pieSliceTextStyle: {
-              color: 'black',
-            },
-            legend: 'none'
-          };
-          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-          chart.draw(data, options);
-        } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
-
-        console.log(totalCredComplete);
-        /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
-
-        /************* DATA FOR BOTTOM BUTTON PARSING **************/
-        var concentrationData = [];
-        var majorData = [];
-        var minorData = [];
-        var totalPathwayCredits = 0;
-
-        for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are concentration
-          if(totalCredComplete[i].title.split('Concentration ')[1]) {
-            concentrationData.push(totalCredComplete[i]);
-            console.log(concentrationData);
-          }
-        }//concentrationData
-
-        for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are majors
-          if(totalCredComplete[i].title.split('Major ')[1]) {
-            majorData.push(totalCredComplete[i]);
-            console.log(majorData);
-          }
-        }//majorData
-
-        for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are minors
-          if(totalCredComplete[i].title.split('Minor ')[1]) {
-            minorData.push(totalCredComplete[i]);
-            console.log(minorData);
-          }
-        }//minorData
-
-        pathwayArray.forEach(function(val){ //gets total credits completed for your pathway
-          var {pathwayCred, pathwayNum, pathwayTitle, pathwayYear} = val;
-          totalPathwayCredits += pathwayCred;
-          $('#pathwayClassTable').append(`<tr><td>${pathwayNum}</td><td>${pathwayTitle}</td><td>${pathwayYear}</td></tr>`);
-        }); //result: totalPathwayCredits = amount of total creds from pathway completed
-
-        $('.detail.pathway').append(totalPathwayCredits);
-        //need to find a way to make max 3
-        concentrationData.forEach(function(val){ //gets total credits completed for your pathway
-          var {completedCredits, totalNeeded, title} = val;
-
-          google.charts.setOnLoadCallback(drawDegreeChart);
-          //Must parse completecredits and required because if not it displays out as a percentage of a
-          //bigger value, making it 1% of the total graph?
-          var cc = parseInt(completedCredits);
-          var t = parseInt(totalNeeded);
-          var r = t - cc;
-
-          if(r < 0) {
-            r = 0;
-          }
-
-          function drawDegreeChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Class', 'Credits'],
-              ['Completed',     cc],
-              ['Required',      r]
-            ]);
-            var options = {
-              pieHole: 0.5,
-              pieSliceTextStyle: {
-                color: 'black',
-              },
-              legend: 'none',
-              title: 'Progress of: ' + title
-            };
-            var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
-            chart.draw(data, options);
-          }
-        });
-
-        majorData.forEach(function(val){ //gets total credits completed for your pathway 
-          var {completedCredits, totalNeeded, title} = val;
-          
-          google.charts.setOnLoadCallback(drawDegreeChart);
-          //Must parse completecredits and required because if not it displays out as a percentage of a 
-          //bigger value, making it 1% of the total graph?
-          var cc = parseInt(completedCredits);
-          var t = parseInt(totalNeeded);
-          var r = t - cc;
-
-          if(r < 0) {
-            r = 0;
-          }
-
-          function drawDegreeChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Class', 'Credits'],
-              ['Completed',     cc],
-              ['Required',      r]
-            ]);
-            var options = {
-              pieHole: 0.5,
-              pieSliceTextStyle: {
-                color: 'black',
-              },
-              legend: 'none',
-              title: 'Progress of: ' + title
-            };
-            var chart = new google.visualization.PieChart(document.getElementById('majorDiv'));
-            chart.draw(data, options);
-          }
-        });
-
-        minorData.forEach(function(val){ //gets total credits completed for your pathway
-          var {completedCredits, totalNeeded, title} = val;
-
+<<<<<<< HEAD
           google.charts.setOnLoadCallback(drawDegreeChart);
           var cc = parseInt(completedCredits);
           var t = parseInt(totalNeeded);
@@ -393,4 +514,6 @@ $("#creds input").keypress(function(e){
         }
       });
   }
+=======
+>>>>>>> 256681a38aa7027633fd9beeed598eb86cbbe9c0
 });
