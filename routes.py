@@ -46,18 +46,14 @@ def destroy():
 
 @app.route("/login", methods=['POST'])
 def login():
-
   # When a user initially logs in, we get the user data from request form.
   # The data then gets saved.
    if not request.form['email'] == "":
      session['email'] = request.form['email']
      session['password'] = request.form['password']
-
-
    result = DegreeWorksTotalScrape.login(session['email'],session['password'])
    # As soon as we can login with their info, delete the password
    # session.pop('password', None)
-
    return jsonify(result)
 
 

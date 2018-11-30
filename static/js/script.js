@@ -2,7 +2,7 @@
   * Gets a value from the server, checking if the user has an active session. If the user is logged in on the application end,
   then we make an AJAX request to place the session credentials back into degree works.
   *
-*//
+*/
 $(function() {
   if(isLogged == "True"){
     $(".main-inside").hide();
