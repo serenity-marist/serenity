@@ -18,6 +18,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from time import sleep
+from random import randint
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
@@ -67,6 +69,8 @@ def login(email, password):
 
   usernameStr = None
   passwordStr = None
+
+  sleep(randint(2,9))
   data = runScrape(driver)
 
 
