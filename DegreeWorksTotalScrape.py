@@ -2,7 +2,6 @@
 # The application will need:
 ## Selenium webdriver/chromedriver since this is being tested in chrome
 ## Pandas, numpy, etc.
-
 import pandas as pd
 import os
 import re
@@ -12,7 +11,6 @@ import sys
 import settings
 import json
 from flask import session
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -20,6 +18,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from time import sleep
+from random import randint
 
 ################# DRIVER CODE PORTION #################
 # Executable path ->
@@ -29,9 +29,6 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 # driver =  webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
-
-def destroy():
-  settings.driver.quit()
 
 
 ##username and password##
@@ -72,6 +69,8 @@ def login(email, password):
 
   usernameStr = None
   passwordStr = None
+
+  sleep(randint(2,9))
   data = runScrape(driver)
 
 
@@ -357,6 +356,7 @@ def runScrape(driver):
     arr.append(x)
   jsonObjects.append(arr)
   settings.driver = driver
+  driver.quit()
   return jsonObjects
 
 

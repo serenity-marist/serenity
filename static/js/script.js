@@ -1,36 +1,15 @@
+/**
+  * Gets a value from the server, checking if the user has an active session. If the user is logged in on the application end,
+  then we make an AJAX request to place the session credentials back into degree works.
+  *
+*/
 $(function() {
   if(isLogged == "True"){
     $(".main-inside").hide();
     logIn();
-  //  scrapeData();
-
-
   }
   /************* SINGLE PAGE APPLICATION MARKUP **************/
-  $(".cont-btn").click(function(){
-    $(".main-inside").hide();
-    $(".log-seg").show();
-  });
 
-
-$("#creds input").keypress(function(e){
-  if (e.which == 13) {
-        e.preventDefault();
-        $("#creds").submit();
-
-    }
-})
-  $("#creds").submit(function(e){
-    e.preventDefault();
-      logIn();
-
-  })
-
-
-  $(".print-btn").click(function(){
-    // $(".dash.main.content").printThis();
-    window.print();
-  })
 
   function loaderShow(text){
     $(".load-p").text(text)
@@ -40,7 +19,6 @@ $("#creds input").keypress(function(e){
   function loaderDelete(){
     $(".loader").hide();
   }
-
   function logIn(){
     $(".msg-sect").empty();
     $(".log-seg").hide();
@@ -49,13 +27,11 @@ $("#creds input").keypress(function(e){
           "password": $("input[name=password]").val(),
           "email": $("input[name=email]").val()
         }
-
       $.ajax({
         url: '/login',
         data:submissionData,
         type: 'POST',
         success: function(body){
-          console.log(body);
           if(body == false){
             loaderDelete();
             $(".log-seg").show();
@@ -66,8 +42,6 @@ $("#creds input").keypress(function(e){
             google.charts.load("current", {packages:["corechart"]});
             $(".main-content-wrapper").hide();
             $(".dashboard").show();
-            //  $(".main-content").empty();
-
             var studInfo  = body[0];
             var totalCredComplete = body[1];
             var currClasses = body[2]
@@ -319,30 +293,7 @@ $("#creds input").keypress(function(e){
             $("#concentration").text(Concentration);
             $("#gpa").text(studInfo["Overall GPA"]);
             /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
-
             /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
-            // google.charts.setOnLoadCallback(drawDegreeChart);
-            // //Must parse completecredits and required because if not it displays out as a percentage of a
-            // //bigger value, making it 1% of the total graph?
-            // var cc = parseInt(completedCredits);
-            // var r = parseInt(required);
-            // function drawDegreeChart() {
-            //   var data = google.visualization.arrayToDataTable([
-            //     ['Class', 'Credits'],
-            //     ['Completed',     cc],
-            //     ['Required',      r]
-            //   ]);
-            //   var options = {
-            //     pieHole: 0.5,
-            //     pieSliceTextStyle: {
-            //       color: 'black',
-            //     },
-            //     legend: 'none'
-            //   };
-            //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-            //   chart.draw(data, options);
-            /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
-            //scrapeData();
           }
 
         },
@@ -362,6 +313,12 @@ $("#creds input").keypress(function(e){
     $('#majorDiv').hide();
     $('#minorDiv').hide();
   }
+
+
+  /** Serenity application event listeners
+    * Each of the methods below are all event listeners for user actions in the application.
+    *
+  **/
 
   $('#pathwayBtn').click(function() {
     allHide();
@@ -426,6 +383,27 @@ $("#creds input").keypress(function(e){
     allHide();
     $('#pathwayDiv').show();
   });
+
+  $(".cont-btn").click(function(){
+    $(".main-inside").hide();
+    $(".log-seg").show();
+  });
+$("#creds input").keypress(function(e){
+  if (e.which == 13) {
+        e.preventDefault();
+        $("#creds").submit();
+
+    }
+})
+  $("#creds").submit(function(e){
+    e.preventDefault();
+      logIn();
+  });
+  $(".print-btn").click(function(){
+    window.print();
+  });
+
+
   /************* END SINGLE PAGE MARKUP **************/
 
 <<<<<<< HEAD
