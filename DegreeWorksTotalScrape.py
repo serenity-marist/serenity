@@ -30,10 +30,17 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 # driver =  webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
 
 
+def destroy():
+  settings.driver.quit()
+
 
 ##username and password##
 def logout():
+  try:
     settings.driver.quit()
+  except:
+    print("caught")
+
 
 
 
@@ -44,6 +51,7 @@ def login(email, password):
   try:
     driver.get(url)
   except:
+    # driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
     driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
     driver.get(url)
 
@@ -64,9 +72,10 @@ def login(email, password):
 
   usernameStr = None
   passwordStr = None
+  data = runScrape(driver)
+
 
   try:
-    data = runScrape(driver)
     session['sessionId']= driver.session_id
     return data
   except:

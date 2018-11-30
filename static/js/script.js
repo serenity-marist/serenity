@@ -263,6 +263,48 @@ $("#creds input").keypress(function(e){
             /************* END FOR CURRENT CLASSES **************/
             /************* POPULATE STUDENT VIEW TABLE AJAX **************/
             var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
+
+            // Before population of student data, we have a function for editing advisors names.
+
+            // This function will take the original string of adviors full names and return
+            // them in a readable format by simply listing their last names.
+
+            //This function is first going to iterate through the string of advisors,
+            //and extract their last names (which have a comma)
+            //as its the only to destinguish within the string the different advisors.
+            //It then formats the names in a readable manner, and returns a single string,
+            //of advisors as "Professor X & Professor Y" as opposed to
+            //"LastName, FirstName MiddleInitial LastName, FirstName MiddleInitial"
+            function getSeparateNames(advisorsNames){
+              var myAdvisors = advisorsNames;
+
+              //Regex matches the name with the comma after it (the last name)
+              var regex1 = /[a-zA-Z-]+\,/g;
+
+              var match;
+              var lastNames = [];
+
+              while( (match = regex1.exec(myAdvisors)) != null){
+              	lastNames.push(match[0]);
+              }
+
+              //Iterate through lastNames and take out the comma
+              for(var i = 0; i < lastNames.length; i++){
+                var commaIndex = lastNames[i].indexOf(',');
+                lastNames[i] = lastNames[i].slice(0, commaIndex);
+              }
+
+              var editedNames = '';
+
+              for(var i = 0; i < lastNames.length; i++){
+                editedNames = editedNames + 'Professor ' + lastNames[i];
+
+                if(i != lastNames.length-1){
+                  editedNames = editedNames + ' & '
+                }
+              }
+              return editedNames;
+            }
             $("#studentName").text(Student);
 
             var nameArray = Student.split(",");
@@ -272,7 +314,7 @@ $("#creds input").keypress(function(e){
             $("#id").text(ID);
             $("#year").text(Classification);
             $("#majors").text(Major);
-            $("#advisor").text(Advisor);
+            $("#advisor").text(getSeparateNames(Advisor));
             $("#minors").text(Minor);
             $("#concentration").text(Concentration);
             $("#gpa").text(studInfo["Overall GPA"]);
