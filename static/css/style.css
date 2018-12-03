@@ -437,8 +437,25 @@ font-size:30px;
 }
 
 
-.msg-sect{
+
+
+.dash-footer{
   width:100%;
+  background-color: #484848;
+  color: white;
+  position: absolute;
+  text-align:center;
+
+}
+.dash-footer a{
+  margin: 10px;
+  list-style:none;
+  color: white;
+  cursor:pointer;
+
+}
+.dash-footer li{
+
 }
 
 
@@ -447,9 +464,32 @@ font-size:30px;
 /* MOBILE DESIGN */
 
 
+
 @media only screen and (max-width: 800px) {
+.degreeProgress{
+  width:100%;
+ }
+.dash.main.content{
+  min-width:100px;
+}
+
+  .login-wrapper{
+    width:62%;
+  }
+  .dash.student.information{
+    width: 99%;
+
+  }
+  .dash.stu.table{
+    padding: 0;
+    overflow-wrap:break-word;
+    margin: 0 auto important!;
+  }
+  .dash.three.butts{
+    float:none;
+  }
   #main-logo{
-    width:400px
+    width:300px
   }
   .land-p{
     font-size:20px;
