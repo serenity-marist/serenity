@@ -35,7 +35,7 @@ $(function() {
           if(body == false){
             loaderDelete();
             $(".log-seg").show();
-            $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+            $(".msg-sect").html(`<h1> There was an error logging you in!</h1>`);
           }
           else if(body.length !== 0){
             loaderDelete();
@@ -92,7 +92,6 @@ $(function() {
               chart.draw(data, options);
             } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
 
-            console.log(totalCredComplete);
             /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
 
             /************* DATA FOR BOTTOM BUTTON PARSING **************/
@@ -104,21 +103,18 @@ $(function() {
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are concentration
               if(totalCredComplete[i].title.split('Concentration ')[1]) {
                 concentrationData.push(totalCredComplete[i]);
-                console.log(concentrationData);
               }
             }//concentrationData
 
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are majors
               if(totalCredComplete[i].title.split('Major ')[1]) {
                 majorData.push(totalCredComplete[i]);
-                console.log(majorData);
               }
             }//majorData
 
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are minors
               if(totalCredComplete[i].title.split('Minor ')[1]) {
                 minorData.push(totalCredComplete[i]);
-                console.log(minorData);
               }
             }//minorData
 
@@ -300,7 +296,7 @@ $(function() {
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".main-content").prepend(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          $(".msg-sect").html(`<h1> There was an error logging you in!</h1>`);
         },
         complete: function(){
         }

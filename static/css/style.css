@@ -443,19 +443,30 @@ font-size:30px;
   width:100%;
   background-color: #484848;
   color: white;
-  position: absolute;
   text-align:center;
-
+  position: absolute;
+  margin-top: 87px;
+  padding:10px;
 }
 .dash-footer a{
   margin: 10px;
   list-style:none;
   color: white;
   cursor:pointer;
+  font-size: 1rem;
+}
+.dash-footer span{
+  font-size:1.5rem;
+  margin: 10px;
 
 }
 .dash-footer li{
 
+}
+
+.footer-wrapper{
+  padding-bottom:60px;
+  box-sizing: border-box;
 }
 
 
