@@ -12,9 +12,6 @@ as an alternative for viewing your degree completion progress.
 - [Flask](http://flask.pocoo.org)
 - [Selenium](https://selenium-python.readthedocs.io)
 
-## Features
-Using your credentials
-
 
 
 ## Code Example
@@ -24,15 +21,25 @@ Using your credentials
 ## Tests
 
 
-## How to use?
+## Set up for future contributions.
+In order to get your machine set up for adding to the project the following things must be installed:
+1. [Python](https://www.python.org/downloads/)
+2. Use pip to install the following packages (Check [here](https://packaging.python.org/tutorials/installing-packages/) to learn how)
+- Flask
+- From Flask: render_template, session, request, redirect, url_for, request, jsonify, os, JSON
+- Pandas as pd
+- re
+- numpy as np
+- datetime
+- sys
+- From b4: BeautifulSoup
+- From selenium: webdriver
+
 
 
 
 ## Credits
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contrbuted in this project.
+
 
 
 ## License
-A short snippet describing the license (MIT, Apache etc)
-
-MIT © [Yourname]()
