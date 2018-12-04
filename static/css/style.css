@@ -336,6 +336,7 @@ font-size:30px;
 
 .dashboard  {
   display: none;
+  padding:10px;
 }
 
 #pathwayTable {
