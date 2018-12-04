@@ -5,7 +5,7 @@ as an alternative for viewing your degree completion progress.
 
 
 ## Screenshots
-![Alt text](/static/img/serenityLogoScreenshot.png "Serenity Logo")
+![Alt text](/static/img/serenityLogoScreenshot.png =100x100)
 
 ## Tech/framework used
 <b>Built with</b>
