@@ -16,7 +16,7 @@ as an alternative for viewing a Marist student's degree completion progress.
 
 
 
-## Set up for future contributions.
+## Set up for future contributions
 In order to get your machine set up for adding to the project the following things must be installed:
 1. Regardless on whichever machine you are running on, the latest [Python ](https://www.python.org/downloads/) must be downloaded. Although macOS systems include Python 2.7 out of the box, our web application runs on the latest version of Python.  
 2. Pip, a tool for installing and managing Python packages, must be used as our application has several Python-based dependencies. With the latest versions of Python, pip is already installed. Using the following command, "pip3 install [package name]" or "pip3 install [package name] as [alias name]" install the following packages:
@@ -30,6 +30,40 @@ In order to get your machine set up for adding to the project the following thin
     - selenium
 3. If utilizing Flask's server in order to run an instance of our web applicaiton on a local server on your machine, running the routes file through python will allow you to do so: "python3 routes.py"
 4. In order to access the internal Docker configurations, an ssh connection must be established(while on-campus wifi): 'ssh serenity@10.11.12.22'.
+
+
+## Editing internal docker files
+Our service is run through a containerization process done by [Docker](https://www.docker.com). Here are a few points to help facilitate that process.
+1. Dockerfile (available in master) are basically used to create *images*, which are called to run *containers* which host your application. Consider the following docker file for our project.
+```
+FROM tiangolo/uwsgi-nginx-flask:python3.7
+EXPOSE 80
+
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+
+CMD python main.py
+```
+2. Line by line:
+    - ```FROM``` : calls the image you are basing your image on
+    - ```EXPOSE``` : for ports
+    - ```COPY``` : to copy current file directory into the images/containers app directory
+    - ```WORKDIR``` : to instantiate which directory you start in
+    - ```RUN``` : to run shell commands
+    - ```CMD``` : as the command to run
+3. To build an image based on this Dockerfile, in the same directory run command:
+``` sudo docker build -t without- expose:latest .  ```
+    - ```-t``` : tag name of image
+    - ```without-expose```: is the placeholder, you can put any name you like.
+4. To run a container based on any image that you created, or pulled via
+    ``` sudo docker pull imagename ```
+5. ``` sudo docker run —name CONTAINER_NAME -p##:## IMAGENAME ```
+    - Where ```-p``` indicates port number.
+    - ```--name``` indicates container name
+    - and ```IMAGENAME``` indicates the image(reference *sudo docker image ls* if you forget the image name)
+6. This will create a container listed in ```sudo docker ps```
+    - Open at whatever port. You should then be able to view your application at 10.11.12.22:PORT # (If it is correctly running)
 ## FAQ's
 - What is serenity?
     - Serenity is a dashboard created by Marist College seniors to give a simpler and more aesthetic degreeworks page for students to follow their progress.
