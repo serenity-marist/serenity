@@ -19,9 +19,10 @@ def home():
     isLogged = True
   return render_template('landing.html', isLogged = isLogged)
 
-@app.route('/dashboard')
+@app.route('/faq')
 def dashboard():
- return render_template('dashboard.html')
+ return render_template('faq.html')
+
 
 @app.route('/webScraperTool', methods =['POST'])
 def webScraperTool():

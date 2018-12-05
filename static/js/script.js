@@ -35,7 +35,7 @@ $(function() {
           if(body == false){
             loaderDelete();
             $(".log-seg").show();
-            $(".msg-sect").html(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+            $(".msg-sect").html(`<h1> There was an error logging you in!</h1>`);
           }
           else if(body.length !== 0){
             loaderDelete();
@@ -92,7 +92,6 @@ $(function() {
               chart.draw(data, options);
             } /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
 
-            console.log(totalCredComplete);
             /************* END POPULAT DEGREE PROGRESS DESCRIPTION **************/
 
             /************* DATA FOR BOTTOM BUTTON PARSING **************/
@@ -104,21 +103,18 @@ $(function() {
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are concentration
               if(totalCredComplete[i].title.split('Concentration ')[1]) {
                 concentrationData.push(totalCredComplete[i]);
-                console.log(concentrationData);
               }
             }//concentrationData
 
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are majors
               if(totalCredComplete[i].title.split('Major ')[1]) {
                 majorData.push(totalCredComplete[i]);
-                console.log(majorData);
               }
             }//majorData
 
             for (var i = 0; i < totalCredComplete.length; i++) { //loop to get all objects that are minors
               if(totalCredComplete[i].title.split('Minor ')[1]) {
                 minorData.push(totalCredComplete[i]);
-                console.log(minorData);
               }
             }//minorData
 
@@ -300,7 +296,7 @@ $(function() {
         error: function(body){
           loaderDelete();
           $(".log-seg").show();
-          $(".main-content").prepend(`<h1> ERROR: Username or Password was incorrect. Please try again..</h1>`);
+          $(".msg-sect").html(`<h1> There was an error logging you in!</h1>`);
         },
         complete: function(){
         }
@@ -406,92 +402,4 @@ $("#creds input").keypress(function(e){
 
   /************* END SINGLE PAGE MARKUP **************/
 
-<<<<<<< HEAD
-          google.charts.setOnLoadCallback(drawDegreeChart);
-          var cc = parseInt(completedCredits);
-          var t = parseInt(totalNeeded);
-          var r = t - cc;
-
-          if(r < 0) {
-            r = 0;
-          }
-
-          function drawDegreeChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Class', 'Credits'],
-              ['Completed',     cc],
-              ['Required',      r]
-            ]);
-            var options = {
-              pieHole: 0.5,
-              pieSliceTextStyle: {
-                color: 'black',
-              },
-              legend: 'none',
-              title: 'Progress of: ' + title
-            };
-            var chart = new google.visualization.PieChart(document.getElementById('minorDiv'));
-            chart.draw(data, options);
-          }
-        });
-        /************* END DATA FOR BOTTOM BUTTON PARSING **************/
-        /************* POPULATE AND NUMERATE TOTAL CURRENT CLASSES **************/
-        currClasses.forEach(function(val){
-          var {currCourseNum, currCourseTitle, currCreditValue} = val
-          $('#currClassTable').append(`<tr><td>${currCourseNum}</td><td>${currCourseTitle}</td><td>${currCreditValue}</td></tr>`);
-        });
-
-        $('.detail.classes').append(currClasses.length);
-        /************* END FOR CURRENT CLASSES **************/
-        /************* POPULATE STUDENT VIEW TABLE AJAX **************/
-        var {College, Concentration, Major, Level, Student, ID, Classification, Advisor, Minor} = studInfo;
-        $("#studentName").text(Student);
-
-        var nameArray = Student.split(",");
-        $("#fname").text(nameArray[nameArray.length-1].trim());
-
-
-        $("#id").text(ID);
-        $("#year").text(Classification);
-        $("#majors").text(Major);
-        $("#advisor").text(Advisor);
-        $("#minors").text(Minor);
-        $("#concentration").text(Concentration);
-        $("#gpa").text(studInfo["Overall GPA"]);
-        /************* END OF POPULATE STUDENT VIEW TABLE AJAX **************/
-          
-        /************* CREATE DEGREE PROGRESS DONUT CHART. **************/
-        // google.charts.setOnLoadCallback(drawDegreeChart);
-        // //Must parse completecredits and required because if not it displays out as a percentage of a
-        // //bigger value, making it 1% of the total graph?
-        // var cc = parseInt(completedCredits);
-        // var r = parseInt(required);
-        // function drawDegreeChart() {
-        //   var data = google.visualization.arrayToDataTable([
-        //     ['Class', 'Credits'],
-        //     ['Completed',     cc],
-        //     ['Required',      r]
-        //   ]);
-        //   var options = {
-        //     pieHole: 0.5,
-        //     pieSliceTextStyle: {
-        //       color: 'black',
-        //     },
-        //     legend: 'none'
-        //   };
-        //   var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        //   chart.draw(data, options);
-        /************* END CREATE DEGREE PROGRESS DONUT CHART. **************/
-        
-        }, /********** END OF SUCCESS **********/
-        error: function(body){
-          $(".main-content").prepend(`<h1> There was an error scraping your data, please log in`);
-        },
-        complete: function(body){
-          loaderDelete();
-        }
-      });
-  }
-=======
->>>>>>> 256681a38aa7027633fd9beeed598eb86cbbe9c0
 });
