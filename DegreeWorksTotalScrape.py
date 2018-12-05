@@ -48,8 +48,8 @@ def login(email, password):
   try:
     driver.get(url)
   except:
-    driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
-    #driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
+    #driver = webdriver.Chrome(executable_path=settings.dirpath + '/chromedriver')
+    driver = webdriver.Remote("http://10.11.12.22:4444/wd/hub", DesiredCapabilities.CHROME)
     driver.get(url)
 
   #
