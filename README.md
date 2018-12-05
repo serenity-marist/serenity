@@ -1,11 +1,10 @@
 ## Serenity
 Serenity is a Marist Capping project which provides a readable and intuitive dashboard
-as an alternative for viewing your degree completion progress.
+as an alternative for viewing a Marist student's degree completion progress.
 
 
 
 ## Screenshots
-<!-- ![Alt text](/static/img/serenityLogoScreenshot.png =100x100) -->
 <img src="/static/img/serenityLogoScreenshot.png" alt="Serenity Logo" width="300" height="200"/>
 
 ## Tech/framework used
@@ -17,32 +16,43 @@ as an alternative for viewing your degree completion progress.
 
 
 
-## Code Example
-
-
-
-## Tests
-
-
 ## Set up for future contributions.
 In order to get your machine set up for adding to the project the following things must be installed:
-1. [Python](https://www.python.org/downloads/)
-2. Use pip to install the following packages (Check [here](https://packaging.python.org/tutorials/installing-packages/) to learn how)
-- Flask
-- From Flask: render_template, session, request, redirect, url_for, request, jsonify, os, JSON
-- Pandas as pd
-- re
-- numpy as np
-- datetime
-- sys
-- From b4: BeautifulSoup
-- From selenium: webdriver
-
-##FAQ
+1. Regardless on whichever machine you are running on, the latest [Python ](https://www.python.org/downloads/) must be downloaded. Although macOS systems include Python 2.7 out of the box, our web application runs on the latest version of Python.  
+2. Pip, a tool for installing and managing Python packages, must be used as our application has several Python-based dependencies. With the latest versions of Python, pip is already installed. Using the following command, "pip3 install [package name]" or "pip3 install [package name] as [alias name]" install the following packages:
+    - Flask
+    - Pandas
+    - re
+    - numpy
+    - datetime
+    - sys
+    - beautifulsoup4
+    - selenium
+3. If utilizing Flask's server in order to run an instance of our web applicaiton on a local server on your machine, running the routes file through python will allow you to do so: "python3 routes.py"
+4. In order to access the internal Docker configurations, an ssh connection must be established(while on-campus wifi): 'ssh serenity@10.11.12.22'.
+## FAQ's
+- What is serenity?
+    - Serenity is a dashboard created by Marist College seniors to give a simpler and more aesthetic degreeworks page for students to follow their progress.
+- How does it work?
+    - You need to be a currently enrolled student to use this service. While connected to on campus wifi, go to the [Serenity](http://degreasy.capping.ecrl.marist.edu) page and click continue to go to the log-in page.
+    - Input your Marist-login credentials (your marist email account or user name).
+    - After a few seconds, it should bring you to our dashboard.
+- After logging in with my proper credentials I get a username/password incorrect message: how come?
+    - This issue might pop up, and is most likely an internal issue. Try re-loading the webpage with the error message, this might solve it.
+- Does Serenity store any user-data?
+    - Your data is not saved anywhere in our servers. It is desgined to eliminate your credentials as soon as the application uses it to scrape your data, and the dashboard data is locally rendered and disappears when you end the session.
+- Can I save my Serenity dashboard?
+    - Absolutely! In the dashboard on the top right hand corner, a "Save as PDF" button will appear to allow you to save the dashboard information.
+- Why was Serenity created?
+    - Serenity was created in order to help students understand their degree progress without wading through a complicated degreeworks page as a quick glance.
+- Is this open source?
+    - It is open source free software and will always be free and accessible to Marist Students.
 
 
 ## Credits
-
+* Project Manager: Natnael Mengistu
+* IT Lead: Phaelan Koock
+* Software Developers: Gary Coltrane, Alexa Layosa Javellana, Ariel Camilo
 
 
 ## License
