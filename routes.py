@@ -23,6 +23,10 @@ def home():
 def dashboard():
  return render_template('faq.html')
 
+@app.route('/troll')
+def troll():
+ return render_template('troll.html')
+
 
 @app.route('/webScraperTool', methods =['POST'])
 def webScraperTool():
