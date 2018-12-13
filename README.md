@@ -17,7 +17,7 @@ as an alternative for viewing a Marist student's degree completion progress.
 ## System Flow
 <b>So how does this system fundamentally work?</b>
 <b>Below is a simple system flow of our applcation<b>
-<img src="/static/img/serenitySystemFlow.png" alt="Serenity System Flow" width="400" height="250"/>
+<img src="/static/img/serenitySystemFlow.png" alt="Serenity System Flow" width="450" height="350"/>
 
 
 
