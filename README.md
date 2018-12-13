@@ -15,9 +15,8 @@ as an alternative for viewing a Marist student's degree completion progress.
 - Containerized with [Docker](https://www.docker.com)
 
 ## System Flow
-<b>So how does this system fundamentally work?</b>
 Below is a simple diagram describing the overall flow of the application.
-<img src="/static/img/serenitySystemFlow.png" alt="Serenity System Flow" width="300" height="200"/>
+<img src="/static/img/serenitySystemFlow.png" alt="Serenity System Flow" width="300" height="250"/>
 
 
 
